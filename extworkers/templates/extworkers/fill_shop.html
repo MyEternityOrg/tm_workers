@@ -1,0 +1,72 @@
+{% extends 'extworkers/base.html' %}
+{% load static %}
+
+{% block content %}
+    <p>{{ enterprise.name }} {{ dts }}<br>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fas fa-table mr-1"></i>Список сотрудников</div>
+                    <div class="card-body">
+                        {% if object_list %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Номер магазина</th>
+                                        <th>Адрес магазина</th>
+                                        <th>Сотрудник ПРР</th>
+                                        <th>Время начала работы</th>
+                                        <th>Время завершения работы</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <form action="" class="tbl_form" method="post">
+                                    {% csrf_token %}
+                                        {% for item in object_list %}
+                                            <tr id="id_{{ forloop.counter }}" name="{{ forloop.counter }}">
+                                                <td><input type="text" id="id_dts_{{ forloop.counter }}"
+                                                           name="dts_{{ forloop.counter }}" value="{{ dts }}" readonly>
+                                                </td>
+                                                <td name="ent_{{ item.guid }}">{{ enterprise.enterprise_code }}</td>
+                                                <td name="name_{{ item.guid }}">{{ enterprise.name }}</td>
+                                                <td name="pname_{{ item.guid }}">{{ item.person_name }}</td>
+                                                <td name="tstar_{{ item.guid }}">{{ item.time_start }}</td>
+                                                <td name="tstop_{{ item.guid }}">{{ item.time_stop }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                                    </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="card-footer"><i class="fas fa-table mr-1"></i>Список пуст.</div>
+                        {% endif %}
+                        <div class="card-footer"><a href="#">
+                            <button class="btn btn-success">Добавить сотрудника ПРР.</button>
+                            <form action="" class="tbl_form" method="post" enctype="multipart/form-data" id="fm" name="fm" value="{1}">
+                                {% csrf_token %}
+                                <input type="text" hidden id="form_data" name="form_data" value='{"1":1}'>
+                                <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                            </form>
+                        </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; GeekShop 2021</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+
+{% endblock %}
