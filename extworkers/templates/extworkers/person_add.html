@@ -2,5 +2,40 @@
 {% load static %}
 
 {% block content %}
-    <p>Person add here</p>
+    <main>
+        <div class="container-fluid">
+            <h5 class="mt-4">Добавление сотрудника: </h5>
+            <form action="#" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="{{ form.person_name.id_for_label }}">Сотрудник: </label>
+                                {{ form.person_name }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="{{ form.f_time.id_for_label }}">Время начала работы: </label>
+                                {{ form.f_time }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="{{ form.t_time.id_for_label }}">Время завершения работы: </label>
+                                {{ form.t_time }}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-12" style="margin-top: 33px;">
+                            <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                        </div>
+                    </div>
+
+
+            </form>
+        </div>
+    </main>
 {% endblock %}

@@ -5,21 +5,24 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from extworkers.forms import FillShopDataForm, EditShopForm, CreatePersonForm
+from extworkers.forms import FillShopDataForm, EditShopForm
 from extworkers.models import Enterprises, ExtWorkerRecord
 
 
 class PersonRecordAdd(CreateView):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_add.html'
-    form_class = CreatePersonForm
-    success_url = reverse_lazy('fill_data')
+    success_url = reverse_lazy('fill_data_shop')
+    fields = ['person_name', 'f_time', 't_time']
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordAdd, self).get_context_data(**kwargs)
         context['title'] = 'Добавить сотрудника'
         return context
 
+    def post(self, request, *args, **kwargs):
+        ret_url = reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),))
+        return redirect(ret_url)
 
 
 class ShopRecord(ListView):
@@ -39,11 +42,6 @@ class ShopRecord(ListView):
         context['title'] = ent.name
         return context
 
-    def post(self, request, *args, **kwargs):
-        print(self.request.POST)
-
-        return redirect(self.success_url)
-
 
 class ShopList(ListView):
     model = Enterprises
@@ -55,7 +53,7 @@ class ShopList(ListView):
         super().__init__(**kwargs)
 
     def get_queryset(self):
-        return self.model.get_list_shops(self)
+        return self.model.get_list_shops(self.model)
 
     def get_context_data(self, **kwargs):
         context = super(ShopList, self).get_context_data(**kwargs)

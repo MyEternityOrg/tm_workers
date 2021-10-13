@@ -18,7 +18,6 @@ class CreatePersonForm(CreateView):
         )
 
 
-
 class EditShopForm(Form):
     class Meta:
         model = ExtWorkerRecord
