@@ -1,18 +1,25 @@
 from datetime import datetime
-from typing import Dict
-import json
 
-from django.db.models import QuerySet
-from django.forms import Form
-from django.http import QueryDict
-from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-
+from django.shortcuts import redirect
 # Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, FormView
+from django.views.generic import ListView, CreateView
 
-from extworkers.forms import FillShopDataForm, EditShopForm
+from extworkers.forms import FillShopDataForm, EditShopForm, CreatePersonForm
 from extworkers.models import Enterprises, ExtWorkerRecord
+
+
+class PersonRecordAdd(CreateView):
+    model = ExtWorkerRecord
+    template_name = 'extworkers/person_add.html'
+    form_class = CreatePersonForm
+    success_url = reverse_lazy('fill_data')
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(PersonRecordAdd, self).get_context_data(**kwargs)
+        context['title'] = 'Добавить сотрудника'
+        return context
+
 
 
 class ShopRecord(ListView):
@@ -25,9 +32,11 @@ class ShopRecord(ListView):
         context = super(ShopRecord, self).get_context_data(**kwargs)
         self.pk = self.kwargs.get('pk')
         filtrate_dts = datetime.strftime(datetime.now(), '%Y-%m-%d')
-        context['enterprise'] = Enterprises.objects.get(guid=self.pk)
+        ent = Enterprises.objects.get(guid=self.pk)
+        context['enterprise'] = ent
         context['dts'] = filtrate_dts
         context['object_list'] = self.model.objects.filter(enterprise_guid=self.pk).filter(dts=filtrate_dts)
+        context['title'] = ent.name
         return context
 
     def post(self, request, *args, **kwargs):

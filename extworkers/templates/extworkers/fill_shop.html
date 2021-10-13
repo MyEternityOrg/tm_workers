@@ -1,8 +1,11 @@
 {% extends 'extworkers/base.html' %}
 {% load static %}
-
 {% block content %}
-    <p>{{ enterprise.name }} {{ dts }}<br>
+    <div class="card-body">
+        <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise.name }}</div>
+        <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
+    </div>
+
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid">
@@ -14,6 +17,7 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>Дата</th>
                                         <th>Номер магазина</th>
                                         <th>Адрес магазина</th>
@@ -23,50 +27,30 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <form action="" class="tbl_form" method="post">
-                                    {% csrf_token %}
-                                        {% for item in object_list %}
-                                            <tr id="id_{{ forloop.counter }}" name="{{ forloop.counter }}">
-                                                <td><input type="text" id="id_dts_{{ forloop.counter }}"
-                                                           name="dts_{{ forloop.counter }}" value="{{ dts }}" readonly>
-                                                </td>
-                                                <td name="ent_{{ item.guid }}">{{ enterprise.enterprise_code }}</td>
-                                                <td name="name_{{ item.guid }}">{{ enterprise.name }}</td>
-                                                <td name="pname_{{ item.guid }}">{{ item.person_name }}</td>
-                                                <td name="tstar_{{ item.guid }}">{{ item.time_start }}</td>
-                                                <td name="tstop_{{ item.guid }}">{{ item.time_stop }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                        <input class="btn btn-info btn-block" type="submit" value="Сохранить">
-                                    </form>
+                                    {% for item in object_list %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ item.dts }}</td>
+                                            <td>{{ item.enterprise_guid.enterprise_code }}</td>
+                                            <td>{{ item.enterprise_guid.name }}</td>
+                                            <td>{{ item.person_name }}</td>
+                                            <td>{{ item.f_time }}</td>
+                                            <td>{{ item.t_time }}</td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         {% else %}
-                            <div class="card-footer"><i class="fas fa-table mr-1"></i>Список пуст.</div>
+                            <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                         {% endif %}
-                        <div class="card-footer"><a href="#">
+                        <div class="card-footer"><a href="{% url 'person_add' enterprise.guid %}">
                             <button class="btn btn-success">Добавить сотрудника ПРР.</button>
-                            <form action="" class="tbl_form" method="post" enctype="multipart/form-data" id="fm" name="fm" value="{1}">
-                                {% csrf_token %}
-                                <input type="text" hidden id="form_data" name="form_data" value='{"1":1}'>
-                                <input class="btn btn-info btn-block" type="submit" value="Сохранить">
-                            </form>
                         </a>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-        <footer class="py-4 bg-light mt-auto">
-            <div class="container-fluid">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; GeekShop 2021</div>
-                </div>
-            </div>
-        </footer>
     </div>
-
-
-
 {% endblock %}

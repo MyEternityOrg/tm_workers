@@ -26,12 +26,12 @@ class ExtWorkerRecord(models.Model):
     enterprise_guid = models.ForeignKey(Enterprises, db_column='enterprise_guid', on_delete=models.CASCADE)
     dts = models.DateField(db_column='dts', auto_now_add=True)
     person_name = models.CharField(db_column='person_name', max_length=128)
-    person_birth_day = models.DateField(db_column='person_birthd')
-    person_birth_place = models.CharField(db_column='person_birthp', max_length=128, default='')
-    time_start = models.TimeField(db_column='time_start', default=datetime.time)
-    time_stop = models.TimeField(db_column='time_stop')
+    # person_birth_day = models.DateField(db_column='person_birthd')
+    # person_birth_place = models.CharField(db_column='person_birthp', max_length=128, default='')
+    f_time = models.TimeField(db_column='f_time', default=datetime.time)
+    t_time = models.TimeField(db_column='t_time')
     duration = models.IntegerField(db_column='duration', default=0)
-    contractor_name = models.CharField(db_column='contractor_name', default='ООО "Рога и Копыта"', max_length=50)
+    # contractor_name = models.CharField(db_column='contractor_name', default='ООО "Рога и Копыта"', max_length=50)
 
     class Meta:
         db_table = 'extworkers_data'
