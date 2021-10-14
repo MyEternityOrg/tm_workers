@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="card-body">
-        <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise.name }}</div>
+        <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
     </div>
 
@@ -31,8 +31,8 @@
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ item.dts }}</td>
-                                            <td>{{ item.enterprise_guid.enterprise_code }}</td>
-                                            <td>{{ item.enterprise_guid.name }}</td>
+                                            <td>{{ item.enterprise.enterprise_code }}</td>
+                                            <td>{{ item.enterprise.name }}</td>
                                             <td>{{ item.person_name }}</td>
                                             <td>{{ item.f_time }}</td>
                                             <td>{{ item.t_time }}</td>

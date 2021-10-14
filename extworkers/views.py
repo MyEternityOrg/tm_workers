@@ -1,7 +1,8 @@
 import uuid
 from datetime import datetime
 
-from django.shortcuts import redirect
+from django.contrib import messages
+from django.shortcuts import redirect, get_object_or_404
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
@@ -16,26 +17,41 @@ class PersonRecordAdd(CreateView):
     success_url = reverse_lazy('fill_data_shop')
     form_class = CreateRecordForm
 
-    # fields = [
-    #     'guid',
-    #     'enterprise_guid',
-    #     'person_name',
-    #     'f_time',
-    #     't_time',
-    #     'duration'
-    # ]
+    def __init__(self):
+        super().__init__(self)
 
-    def get_context_data(self, object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PersonRecordAdd, self).get_context_data(**kwargs)
+        context['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('uid'))
         context['title'] = 'Добавить сотрудника'
         return context
 
     def post(self, request, *args, **kwargs):
-        ret_url = reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),))
         form = CreateRecordForm(request.POST)
-        for f in form.fields:
-            print(form.fields[f])
-        return redirect(ret_url)
+        if form.is_valid():
+            pass
+    #     form = super(PersonRecordAdd, self).get_form()
+    #     if form.is_valid:
+    #         form.save()
+    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
+    #     else:
+    #         messages.warning(request, 'Ошибка данных формы!')
+    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
+
+    # def post(self, request, *args, **kwargs):
+    #     obj = ExtWorkerRecord()
+    #     obj.guid = uuid.uuid4()
+    #     obj.enterprise = Enterprises.objects.get(guid=self.kwargs.get('uid'))
+    #     obj.person_name = self.request.POST['person_name']
+    #     obj.dts = datetime.now()
+    #     obj.f_time = self.request.POST['f_time']
+    #     obj.t_time = self.request.POST['t_time']
+    #     try:
+    #         obj.save()
+    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
+    #     except:
+    #         messages.warning(request, 'Ошибка данных формы!')
+    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
 
 
 class ShopRecord(ListView):
@@ -57,7 +73,7 @@ class ShopRecord(ListView):
         ent = Enterprises.objects.get(guid=self.pk)
         context['enterprise'] = ent
         context['dts'] = filtrate_dts
-        context['object_list'] = self.model.objects.filter(enterprise_guid=self.pk).filter(dts=filtrate_dts)
+        context['object_list'] = self.model.objects.filter(enterprise=self.pk).filter(dts=filtrate_dts)
         context['title'] = ent.name
         return context
 

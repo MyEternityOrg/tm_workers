@@ -1,18 +1,48 @@
+import datetime
+import uuid
+from datetime import datetime
+
 from django import forms
-from django.forms import Form, CharField, Textarea
+from django.forms import Form, Textarea
 
 from .models import Enterprises, ExtWorkerRecord
 
 
 class CreateRecordForm(forms.ModelForm):
-    person_name = CharField(help_text='TEST')
+    guid = forms.CharField()
+    person_name = forms.CharField()
+    enterprise = forms.CharField()
+    dts = forms.DateField()
+    f_time = forms.TimeField()
+    t_time = forms.TimeField()
+
+    person_name.widget.attrs.update({'class': 'special'})
+    f_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': False, 'required': True})
+    t_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': False, 'required': True})
 
     class Meta:
         model = ExtWorkerRecord
         exclude = ('dts',)
-        widgets = {
-            'person_name': Textarea(attrs={'cols': 80, 'rows': 20}),
-        }
+
+    def clean_t_time(self):
+        data = self.cleaned_data['t_time']
+        try:
+            h = data.hour
+            m = data.minute
+        except:
+            raise forms.ValidationError('Некорректное время!')
+
+    def clean_f_time(self):
+        data = self.cleaned_data['f_time']
+        try:
+            h = data.hour
+            m = data.minute
+        except:
+            raise forms.ValidationError('Некорректное время!')
+
+    def __init__(self, *args, **kwargs):
+        super(CreateRecordForm, self).__init__(*args, **kwargs)
+        self.instance.enterprise = Enterprises.objects.get(guid='0940D36F-845E-11E1-B5AB-002264F5ABA4')
 
 
 class EditShopForm(Form):
