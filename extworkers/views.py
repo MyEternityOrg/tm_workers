@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from django.shortcuts import redirect
@@ -5,7 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from extworkers.forms import FillShopDataForm, EditShopForm
+from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
 
 
@@ -13,7 +14,16 @@ class PersonRecordAdd(CreateView):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_add.html'
     success_url = reverse_lazy('fill_data_shop')
-    fields = ['person_name', 'f_time', 't_time']
+    form_class = CreateRecordForm
+
+    # fields = [
+    #     'guid',
+    #     'enterprise_guid',
+    #     'person_name',
+    #     'f_time',
+    #     't_time',
+    #     'duration'
+    # ]
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordAdd, self).get_context_data(**kwargs)
@@ -22,13 +32,22 @@ class PersonRecordAdd(CreateView):
 
     def post(self, request, *args, **kwargs):
         ret_url = reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),))
+        form = CreateRecordForm(request.POST)
+        for f in form.fields:
+            print(form.fields[f])
         return redirect(ret_url)
 
 
 class ShopRecord(ListView):
     model = ExtWorkerRecord
     template_name = 'extworkers/fill_shop.html'
-    form_class = EditShopForm
+    fields = ['guid',
+              'enterprise_guid',
+              'dts',
+              'person_name',
+              'f_time',
+              't_time',
+              'duration']
     success_url = reverse_lazy('fill_data')
 
     def get_context_data(self, object_list=None, **kwargs):
@@ -46,7 +65,7 @@ class ShopRecord(ListView):
 class ShopList(ListView):
     model = Enterprises
     template_name = 'extworkers/list_shop.html'
-    form_class = FillShopDataForm
+    fields = ['enterprise_code', 'name']
     success_url = reverse_lazy('extworkers/list_shop.html')
 
     def __init__(self, **kwargs):

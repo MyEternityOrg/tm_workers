@@ -1,21 +1,18 @@
-from django.forms import Form
-from django.views.generic import CreateView
+from django import forms
+from django.forms import Form, CharField, Textarea
 
 from .models import Enterprises, ExtWorkerRecord
 
 
-class CreatePersonForm(CreateView):
+class CreateRecordForm(forms.ModelForm):
+    person_name = CharField(help_text='TEST')
+
     class Meta:
         model = ExtWorkerRecord
-        fields = (
-            'guid',
-            'enterprise_guid',
-            'dts',
-            'person_name',
-            'f_time',
-            't_time',
-            'duration'
-        )
+        exclude = ('dts',)
+        widgets = {
+            'person_name': Textarea(attrs={'cols': 80, 'rows': 20}),
+        }
 
 
 class EditShopForm(Form):
@@ -31,6 +28,9 @@ class EditShopForm(Form):
             'duration'
         )
 
+    def __init__(self, *args, **kwargs):
+        super(EditShopForm, self).__init__(*args, **kwargs)
+
 
 class FillShopDataForm(Form):
     class Meta:
@@ -39,3 +39,6 @@ class FillShopDataForm(Form):
             'enterprise_code',
             'name'
         )
+
+    def __init__(self, *args, **kwargs):
+        super(FillShopDataForm, self).__init__(*args, **kwargs)
