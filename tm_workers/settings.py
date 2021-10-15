@@ -76,27 +76,16 @@ WSGI_APPLICATION = 'tm_workers.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'PersonnelMirror',
-        'USER': 'sa',
-        'PASSWORD': 'yjdsqcf2021',
-        'HOST': 'cssql5.e5.vgg.ru',
-        'OPTIONS': {
-            # 'driver': 'ODBC Driver 13 for SQL Server',
-            'driver': 'SQL Server Native Client 11.0',
-            'unicode_results': True,
-            },
-    }
+    "default": {
+        "ENGINE": "mssql",
+        "NAME": "Personnel",
+        "USER": "sa",
+        "PASSWORD": "yjdsqcf2021",
+        "HOST": "cssql5.e5.vgg.ru",
+        "PORT": "1433",
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server",},
+    },
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -141,4 +130,4 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
