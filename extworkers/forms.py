@@ -1,9 +1,5 @@
-import datetime
-import uuid
-from datetime import datetime
-
 from django import forms
-from django.forms import Form, Textarea
+from django.forms import Form
 
 from .models import Enterprises, ExtWorkerRecord
 

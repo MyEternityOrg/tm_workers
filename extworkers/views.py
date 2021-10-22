@@ -1,12 +1,10 @@
 import uuid
 from datetime import datetime
 
-from django.contrib import messages
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 # Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, FormView
-from django.views.generic.edit import BaseFormView
+from django.views.generic import ListView, CreateView
 
 from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
@@ -24,7 +22,9 @@ class PersonRecordAdd(CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(initial={'guid': uuid.uuid4(), 'dts': datetime.now(), 'enterprise': self.kwargs.get('uid')}, data=request.POST)
+        form = self.form_class(
+            initial={'guid': uuid.uuid4(), 'dts': datetime.now(), 'enterprise': self.kwargs.get('uid')},
+            data=request.POST)
         if form.is_valid():
             return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
         else:
@@ -60,7 +60,6 @@ class ShopRecord(ListView):
     model = ExtWorkerRecord
     template_name = 'extworkers/fill_shop.html'
     success_url = reverse_lazy('fill_data')
-
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(ShopRecord, self).get_context_data(**kwargs)

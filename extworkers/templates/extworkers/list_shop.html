@@ -13,7 +13,7 @@
             <tbody>
             {% for item in object_list %}
                 <tr>
-{#                    <th scope ="row"><a href="{% url 'fill_data_shop' item.guid %}"><button class="btn btn-success">{{ forloop.counter }}</button></a></th>#}
+                    {#                    <th scope ="row"><a href="{% url 'fill_data_shop' item.guid %}"><button class="btn btn-success">{{ forloop.counter }}</button></a></th>#}
                     <th scope="row"><a href="{% url 'fill_data_shop' item.guid %}">{{ forloop.counter }}</a></th>
                     <td>{{ item.name }}</td>
                 </tr>
