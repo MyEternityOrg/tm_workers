@@ -11,7 +11,7 @@
     <main>
         <div class="container-fluid">
             <h5 class="mt-4">Добавление сотрудника: </h5>
-            <form action="#" method="post" enctype="multipart/form-data">
+            <form action="#" method="post" enctype="multipart/form-data" id="f_main">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="col-lg-6">
@@ -61,6 +61,27 @@
                 pickDate: false,
                 pickSeconds: false
             });
+        });
+
+        const f_time = document.getElementById('id_f_time');
+        const t_time = document.getElementById('id_t_time');
+        const f_main = document.getElementById('f_main')
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            f_time.value = '09:00';
+            t_time.value = '17:00';
+        });
+
+        document.addEventListener('submit', function (e) {
+            let fd = new Date()
+            let td = new Date()
+            fd.setHours.apply(fd, f_time.value.split(":"));
+            td.setHours.apply(td, t_time.value.split(":"));
+            console.log(fd, td)
+            if (fd > td) {
+                console.log('Дата начала не может быть больше даты завершения!')
+                e.preventDefault();
+            }
         });
 
     </script>

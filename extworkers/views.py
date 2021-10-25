@@ -1,6 +1,8 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import redirect
 # Create your views here.
 from django.urls import reverse_lazy
@@ -8,52 +10,33 @@ from django.views.generic import ListView, CreateView
 
 from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
+from tm_workers.mixin import BaseClassContextMixin
 
 
-class PersonRecordAdd(CreateView):
+class PersonRecordAdd(CreateView, BaseClassContextMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_add.html'
     success_url = reverse_lazy('fill_data_shop')
     form_class = CreateRecordForm
+    title = 'Добавить сотрудника'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(PersonRecordAdd, self).get_context_data(**kwargs)
-        context['title'] = 'Добавить сотрудника'
-        return context
+    def get_form(self, form_class=None):
+        form = super(PersonRecordAdd, self).get_form()
+        form.person_name = 'Иванов Иван Иванович'
+        return form
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(
-            initial={'guid': uuid.uuid4(), 'dts': datetime.now(), 'enterprise': self.kwargs.get('uid')},
-            data=request.POST)
+        post = request.POST.copy()
+        post['guid'] = uuid.uuid4()
+        post['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('pk'))
+        form = CreateRecordForm(post)
         if form.is_valid():
-            return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
+            form.save()
+            messages.success(request, 'Данные сохранены!')
+            return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('pk'),)))
         else:
-            print(form.errors)
-            return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
-    #
-
-    #     form = super(PersonRecordAdd, self).get_form()
-    #     if form.is_valid:
-    #         form.save()
-    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
-    #     else:
-    #         messages.warning(request, 'Ошибка данных формы!')
-    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
-
-    # def post(self, request, *args, **kwargs):
-    #     obj = ExtWorkerRecord()
-    #     obj.guid = uuid.uuid4()
-    #     obj.enterprise = Enterprises.objects.get(guid=self.kwargs.get('uid'))
-    #     obj.person_name = self.request.POST['person_name']
-    #     obj.dts = datetime.now()
-    #     obj.f_time = self.request.POST['f_time']
-    #     obj.t_time = self.request.POST['t_time']
-    #     try:
-    #         obj.save()
-    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
-    #     except:
-    #         messages.warning(request, 'Ошибка данных формы!')
-    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('uid'),)))
+            messages.warning(request, 'Ошибка данных!')
+            return HttpResponse("Некорректные данные формы!")
 
 
 class ShopRecord(ListView):
