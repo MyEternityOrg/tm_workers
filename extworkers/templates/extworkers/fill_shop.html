@@ -14,10 +14,10 @@
                     <div class="card-body">
                         {% if object_list %}
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table id="datatable" class="table table-bordered table-hover" width="100%"
+                                       cellspacing="0">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Дата</th>
                                         <th>Номер магазина</th>
                                         <th>Адрес магазина</th>
@@ -28,8 +28,8 @@
                                     </thead>
                                     <tbody>
                                     {% for item in object_list %}
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
+                                        <tr class='clickable-row'
+                                            data-href="{% url 'person_edit' item.enterprise.guid item.guid %}">
                                             <td>{{ item.dts }}</td>
                                             <td>{{ item.enterprise.enterprise_code }}</td>
                                             <td>{{ item.enterprise.name }}</td>
@@ -41,6 +41,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            {% include 'extworkers/pagination.html' %}
                         {% else %}
                             <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                         {% endif %}
@@ -53,4 +54,7 @@
             </div>
         </main>
     </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'dist/js/jquery.tables_tm.js' %}"></script>
 {% endblock %}

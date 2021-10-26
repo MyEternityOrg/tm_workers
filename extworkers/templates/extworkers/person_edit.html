@@ -1,0 +1,54 @@
+{% extends 'extworkers/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
+    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid">
+            <h5 class="mt-4">Редактирование записи: </h5>
+            <form action="#" method="post" enctype="multipart/form-data" id="f_main">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="small mb-1" for="{{ form.person_name.id_for_label }}">Сотрудник: </label>
+                            {{ form.person_name }}
+                        </div>
+                    </div>
+                    <label class="small mb-1" for="{{ form.f_time.id_for_label }}">Время начала работы: </label>
+                    <div id="f_time_picker" class="input-append">
+                        {{ form.f_time }}
+                        <span class="add-on">
+                            <i style="width: 14px; height: 14px; margin-top: -3px" data-time-icon="icon-time"
+                               data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div>
+                    <label class="small mb-1" for="{{ form.t_time.id_for_label }}">Время окончания работы: </label>
+                    <div id="t_time_picker" class="input-append">
+                        {{ form.t_time }}
+                        <span class="add-on">
+                            <i style="width: 14px; height: 14px; margin-top: -3px" data-time-icon="icon-time"
+                               data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+                <span id="result"></span>
+                <div class="form-row">
+                    <div class="col-lg-12" style="margin-top: 33px;">
+                        <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'dist/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'dist/js/person_edit.js' %}" defer></script>
+{% endblock %}
