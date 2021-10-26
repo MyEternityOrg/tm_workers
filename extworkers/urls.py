@@ -2,6 +2,8 @@ from django.urls import path
 
 from .views import ShopList, ShopRecord, PersonRecordAdd, PersonRecordModify, PersonRecordDelete
 
+app_name = 'tm_workers'
+
 urlpatterns = [
     path('', ShopList.as_view(), name='fill_data'),
     path('<pk>/', ShopRecord.as_view(), name='fill_data_shop'),

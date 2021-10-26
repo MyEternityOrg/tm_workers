@@ -12,7 +12,7 @@
             </thead>
             <tbody>
             {% for item in object_list %}
-                <tr class="clickable-row" data-href="{% url 'fill_data_shop' item.guid %}">
+                <tr class="clickable-row" data-href="{% url 'tm_workers:fill_data_shop' item.guid %}">
                     <th>{{ item.enterprise_code }}</th>
                     <td>{{ item.name }}</td>
                 </tr>

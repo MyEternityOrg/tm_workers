@@ -16,19 +16,19 @@ from tm_workers.mixin import BaseClassContextMixin
 class PersonRecordDelete(DeleteView, BaseClassContextMixin):
     model = ExtWorkerRecord
     title = 'Удалить запись'
-    success_url = reverse_lazy('fill_data_shop')
+    success_url = reverse_lazy('tm_workers:fill_data_shop')
     template_name = 'extworkers/person_edit.html'
 
     def post(self, request, *args, **kwargs):
         obj = ExtWorkerRecord.objects.filter(dts=datetime.now()).get(guid=self.kwargs.get('pk'))
         obj.delete()
-        return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('dv'),)))
+        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'),)))
 
 
 class PersonRecordModify(UpdateView, BaseClassContextMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_edit.html'
-    success_url = reverse_lazy('fill_data_shop')
+    success_url = reverse_lazy('tm_workers:fill_data_shop')
     fields = ['person_name', 'f_time', 't_time']
     title = 'Редактировать запись'
 
@@ -50,29 +50,13 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin):
         obj.f_time = request.POST['f_time']
         obj.t_time = request.POST['t_time']
         obj.save()
-        return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('dv'),)))
-
-    # def get_form(self, form_class=None):
-    #     form = super(PersonRecordModify, self).get_form()
-    #     return form
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form(request.POST)
-    #     # post = request.POST.copy()
-    #     # post['guid'] = ExtWorkerRecord.objects.get(guid=self.kwargs.get('pk'))
-    #     # post['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('dv'))
-    #     # form = UpdateRecordForm(post)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('dv'),)))
-    #     else:
-    #         return HttpResponse("Некорректные данные формы!")
+        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'),)))
 
 
 class PersonRecordAdd(CreateView, BaseClassContextMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_add.html'
-    success_url = reverse_lazy('fill_data_shop')
+    success_url = reverse_lazy('tm_workers:fill_data_shop')
     form_class = CreateRecordForm
     title = 'Добавить сотрудника'
 
@@ -88,7 +72,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin):
         if form.is_valid():
             form.save()
             messages.success(request, 'Данные сохранены!')
-            return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('pk'),)))
+            return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('pk'),)))
         else:
             messages.warning(request, 'Ошибка данных!')
             return HttpResponse("Некорректные данные формы!")
@@ -97,16 +81,16 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin):
 class ShopRecord(ListView):
     model = ExtWorkerRecord
     template_name = 'extworkers/fill_shop.html'
-    success_url = reverse_lazy('fill_data')
+    success_url = reverse_lazy('tm_workers:fill_data')
     paginate_by = 10
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(enterprise=self.kwargs.get('pk')).filter(dts=datetime.strftime(datetime.now(), '%Y-%m-%d'))
+        return qs.filter(enterprise=self.kwargs.get('pk'), dts=datetime.strftime(datetime.now(), '%Y-%m-%d'))
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(ShopRecord, self).get_context_data(**kwargs)
-        ent = Enterprises.objects.filter(guid=self.kwargs.get('pk')).first()
+        ent = Enterprises.objects.get(guid=self.kwargs.get('pk'))
         context['enterprise'] = ent
         context['dts'] = datetime.strftime(datetime.now(), '%Y-%m-%d')
         context['title'] = ent.name

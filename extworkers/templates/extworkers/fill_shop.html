@@ -29,7 +29,7 @@
                                     <tbody>
                                     {% for item in object_list %}
                                         <tr class='clickable-row'
-                                            data-href="{% url 'person_edit' item.enterprise.guid item.guid %}">
+                                            data-href="{% url 'tm_workers:person_edit' item.enterprise.guid item.guid %}">
                                             <td>{{ item.dts }}</td>
                                             <td>{{ item.enterprise.enterprise_code }}</td>
                                             <td>{{ item.enterprise.name }}</td>
@@ -45,7 +45,7 @@
                         {% else %}
                             <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                         {% endif %}
-                        <div class="card-footer"><a href="{% url 'person_add' enterprise.guid %}">
+                        <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid %}">
                             <button class="btn btn-success">Добавить сотрудника ПРР.</button>
                         </a>
                         </div>
