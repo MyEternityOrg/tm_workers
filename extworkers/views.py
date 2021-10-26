@@ -6,11 +6,23 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 # Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
 from tm_workers.mixin import BaseClassContextMixin
+
+
+class PersonRecordDelete(DeleteView, BaseClassContextMixin):
+    model = ExtWorkerRecord
+    title = 'Удалить запись'
+    success_url = reverse_lazy('fill_data_shop')
+    template_name = 'extworkers/person_edit.html'
+
+    def post(self, request, *args, **kwargs):
+        obj = ExtWorkerRecord.objects.filter(dts=datetime.now()).get(guid=self.kwargs.get('pk'))
+        obj.delete()
+        return redirect(reverse_lazy('fill_data_shop', args=(self.kwargs.get('dv'),)))
 
 
 class PersonRecordModify(UpdateView, BaseClassContextMixin):
@@ -18,7 +30,6 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin):
     template_name = 'extworkers/person_edit.html'
     success_url = reverse_lazy('fill_data_shop')
     fields = ['person_name', 'f_time', 't_time']
-    # form_class = UpdateRecordForm
     title = 'Редактировать запись'
 
     def get_form(self, form_class=None):

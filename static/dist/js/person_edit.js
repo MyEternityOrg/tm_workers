@@ -1,7 +1,6 @@
 const f_time = document.getElementById('id_f_time');
 const t_time = document.getElementById('id_t_time');
 const f_main = document.getElementById('f_main')
-{# setting up time fields styles#}
 
 $(function () {
 	$('#f_time_picker').datetimepicker({
@@ -17,13 +16,13 @@ $(function () {
 	});
 });
 
-{# default time values #}
+
 document.addEventListener('DOMContentLoaded', function (event) {
 	f_time.value = '09:00';
 	t_time.value = '17:00';
 });
 
-{# before submit validation #}
+
 document.addEventListener('submit', function (e) {
 	let fd = new Date()
 	let td = new Date()

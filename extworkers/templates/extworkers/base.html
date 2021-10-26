@@ -10,8 +10,8 @@
     <title>{{ title|title }}</title>
     <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'plugins/DataTables/datatables.min.css' %}"/>
     {% block css %}
     {% endblock %}
@@ -26,16 +26,18 @@
         </div>
     </div>
 </footer>
+{% spaceless %}
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'plugins/jquery/jquery.floatThead.js' %}"></script>
-<script src="{% static 'plugins/jquery/jquery.floatThead.min.js' %}"></script>
+{#<script src="{% static 'plugins/jquery/jquery.floatThead.js' %}"></script>#}
+{#<script src="{% static 'plugins/jquery/jquery.floatThead.min.js' %}"></script>#}
 <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
 <script src="{% static 'plugins/Datatables/datatables.js' %}"></script>
 <script src="{% static 'plugins/Datatables/datatables.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
-<script src="{% static 'dist/js/demo.js' %}"></script>
+{#<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>#}
+{#<script src="{% static 'dist/js/demo.js' %}"></script>#}
 {% block script %}
 {% endblock %}
+{% endspaceless %}
 </body>
 </html>
