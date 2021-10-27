@@ -14,6 +14,13 @@ class ProfileUser(models.Model):
         return {'id': self.user_id, 'ent': self.ent_guid, 'ip': self.ip_shop}
 
     @classmethod
+    def get_profile_by_user_ip(cls, ip):
+        if ip == '127.0.0.1':
+            return ProfileUser.objects.get(user_id=2)
+        else:
+            return ProfileUser.objects.filter(ip_shop=ip).first()
+
+    @classmethod
     def get_profile_by_user_id(cls, user_id):
         return ProfileUser.objects.get(user_id=user_id)
 
