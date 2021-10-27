@@ -1,11 +1,11 @@
 import uuid
 
+from django.contrib.auth.models import User
 from django.db import models
 
 
 # Create your models here.
 class Enterprises(models.Model):
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column='guid')
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     name = models.CharField(max_length=400, db_column='name')
     enterprise_code = models.IntegerField(db_column='enterprise_code')
