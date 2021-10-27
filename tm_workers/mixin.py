@@ -10,10 +10,10 @@ class UserIsAdminCheckMixin(View):
         return super(UserIsAdminCheckMixin, self).dispatch(request, *args, **kwargs)
 
 
-class UserActiveCheckMixin(View):
+class UserLoginCheckMixin(View):
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, request, *args, **kwargs):
-        return super(UserActiveCheckMixin, self).dispatch(request, *args, **kwargs)
+        return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
 
 
 class BaseClassContextMixin(ContextMixin):

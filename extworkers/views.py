@@ -78,7 +78,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin):
             return HttpResponse("Некорректные данные формы!")
 
 
-class ShopRecord(ListView):
+class ShopRecord(ListView, BaseClassContextMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/fill_shop.html'
     success_url = reverse_lazy('tm_workers:fill_data')
@@ -97,20 +97,16 @@ class ShopRecord(ListView):
         return context
 
 
-class ShopList(ListView):
+class ShopList(ListView, BaseClassContextMixin):
     model = Enterprises
     template_name = 'extworkers/list_shop.html'
     fields = ['enterprise_code', 'name']
     success_url = reverse_lazy('extworkers/list_shop.html')
     paginate_by = 30
+    title = 'Список подразделений'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def get_queryset(self):
         return self.model.get_list_shops()
-
-    def get_context_data(self, **kwargs):
-        context = super(ShopList, self).get_context_data(**kwargs)
-        context['title'] = 'Список подразделений'
-        return context
