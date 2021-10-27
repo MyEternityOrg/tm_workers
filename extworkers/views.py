@@ -10,10 +10,10 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
-from tm_workers.mixin import BaseClassContextMixin
+from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 
 
-class PersonRecordDelete(DeleteView, BaseClassContextMixin):
+class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     title = 'Удалить запись'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
@@ -25,7 +25,7 @@ class PersonRecordDelete(DeleteView, BaseClassContextMixin):
         return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'),)))
 
 
-class PersonRecordModify(UpdateView, BaseClassContextMixin):
+class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_edit.html'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
@@ -53,7 +53,7 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin):
         return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'),)))
 
 
-class PersonRecordAdd(CreateView, BaseClassContextMixin):
+class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_add.html'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
@@ -78,7 +78,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin):
             return HttpResponse("Некорректные данные формы!")
 
 
-class ShopRecord(ListView, BaseClassContextMixin):
+class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/fill_shop.html'
     success_url = reverse_lazy('tm_workers:fill_data')
@@ -97,7 +97,7 @@ class ShopRecord(ListView, BaseClassContextMixin):
         return context
 
 
-class ShopList(ListView, BaseClassContextMixin):
+class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = Enterprises
     template_name = 'extworkers/list_shop.html'
     fields = ['enterprise_code', 'name']

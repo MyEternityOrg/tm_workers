@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
@@ -19,11 +19,12 @@ class UserLogin(LoginView, BaseClassContextMixin):
         auth = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if not auth:
             return redirect('users:user_login')
+        login(request, auth)
         if auth.is_active:
             if auth.is_staff:
                 return redirect('tm_workers:fill_data')
             else:
-                profile = ProfileUser.objects.get(user_id=auth.id)
+                profile = ProfileUser.get_profile_by_user_id(auth.id)
                 return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(profile.ent_guid,)))
         else:
             return redirect('users:user_login')

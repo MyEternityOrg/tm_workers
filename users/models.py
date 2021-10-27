@@ -13,6 +13,10 @@ class ProfileUser(models.Model):
     def __str__(self):
         return {'id': self.user_id, 'ent': self.ent_guid, 'ip': self.ip_shop}
 
+    @classmethod
+    def get_profile_by_user_id(cls, user_id):
+        return ProfileUser.objects.get(user_id=user_id)
+
     class Meta:
         db_table = 'TimeSheet_profileuser'
         managed = False
