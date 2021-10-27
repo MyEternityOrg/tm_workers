@@ -11,7 +11,7 @@ class ProfileUser(models.Model):
     ip_shop = models.CharField(max_length=30, db_column='ip_shop', blank=True)
 
     def __str__(self):
-        return str([self.user_id, self.ent_guid, self.ip_shop])
+        return {'id': self.user_id, 'ent': self.ent_guid, 'ip': self.ip_shop}
 
     class Meta:
         db_table = 'TimeSheet_profileuser'
