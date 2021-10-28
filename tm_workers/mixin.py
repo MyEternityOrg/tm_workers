@@ -17,7 +17,7 @@ class UserLoginCheckMixin(View):
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, request, *args, **kwargs):
         profile = ProfileUser.get_profile_by_user_id(request.user.id)
-        if request.user.is_staff or profile.ent_guid == kwargs.get('pk') and request.user.is_active:
+        if request.user.is_staff or (profile.ent_guid == kwargs.get('pk') and request.user.is_active):
             return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
         else:
             return HttpResponseNotAllowed(request.method)

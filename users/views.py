@@ -18,6 +18,7 @@ class UserLogin(LoginView, BaseClassContextMixin):
     def get(self, request, *args, **kwargs):
         response = super(UserLogin, self).get(request, *args, **kwargs)
         profile = ProfileUser.get_profile_by_user_ip(request.META['REMOTE_ADDR'])
+        print(profile)
         if profile:
             user = User.objects.get(pk=profile.user_id)
             login(request, user)

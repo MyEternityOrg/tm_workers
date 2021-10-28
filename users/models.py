@@ -11,14 +11,14 @@ class ProfileUser(models.Model):
     ip_shop = models.CharField(max_length=30, db_column='ip_shop', blank=True)
 
     def __str__(self):
-        return {'id': self.user_id, 'ent': self.ent_guid, 'ip': self.ip_shop}
+        return str({'id': self.user_id, 'ent': self.ent_guid, 'ip': self.ip_shop})
 
     @classmethod
     def get_profile_by_user_ip(cls, ip):
-        if ip == '127.0.0.1':
-            return ProfileUser.objects.get(user_id=2)
-        else:
+        if ip != '127.0.0.1':
             return ProfileUser.objects.filter(ip_shop=ip).first()
+        else:
+            return ProfileUser.objects.get(user_id=2)
 
     @classmethod
     def get_profile_by_user_id(cls, user_id):
