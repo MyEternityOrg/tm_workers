@@ -1,12 +1,17 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 from tm_workers.mixin import BaseClassContextMixin
 from users.forms import UserLoginForm
 from users.models import ProfileUser
+
+
+class UserLogout(LogoutView, BaseClassContextMixin):
+    model = User
+    template_name = '/'
 
 
 class UserLogin(LoginView, BaseClassContextMixin):
