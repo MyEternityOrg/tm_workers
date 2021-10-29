@@ -15,10 +15,15 @@ class ProfileUser(models.Model):
 
     @classmethod
     def get_profile_by_user_ip(cls, ip):
-        if ip != '127.0.0.1':
-            return ProfileUser.objects.filter(ip_shop=ip).first()
-        else:
-            return ProfileUser.objects.get(user_id=2)
+        try:
+            __ip = '.'.join(str(ip).split('.')[0:3]) + '.'
+            if __ip == '127.0.0.':
+                return ProfileUser.objects.get(user_id=2)
+            else:
+                return ProfileUser.objects.filter(ip_shop__contains=__ip).first()
+        except Exception as E:
+            print('Model ProfileUsers, parse IP exc: ', E)
+            return None
 
     @classmethod
     def get_profile_by_user_id(cls, user_id):
