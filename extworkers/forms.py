@@ -9,11 +9,15 @@ class UpdateRecordForm(forms.ModelForm):
     person_name = forms.CharField()
     f_time = forms.TimeField()
     t_time = forms.TimeField()
+    p_city = forms.CharField()
+    p_birthday = forms.DateField()
 
     guid.widget.attrs.update({'class': 'special', 'readonly': True})
     person_name.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Введите ФИО сотрудника"})
+    p_city.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Место рождения сотрудника"})
     f_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
     t_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
+    p_birthday.widget.attrs.update({'data-format': 'yyyy-MM-dd', 'readonly': True, 'required': True})
 
     class Meta:
         model = ExtWorkerRecord
@@ -38,10 +42,14 @@ class CreateRecordForm(forms.ModelForm):
     person_name = forms.CharField()
     f_time = forms.TimeField()
     t_time = forms.TimeField()
+    p_city = forms.CharField()
+    p_birthday = forms.DateField()
 
     person_name.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Введите ФИО сотрудника"})
+    p_city.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Место рождения сотрудника"})
     f_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
     t_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
+    p_birthday.widget.attrs.update({'data-format': 'yyyy-MM-dd', 'readonly': True, 'required': True})
 
     class Meta:
         model = ExtWorkerRecord

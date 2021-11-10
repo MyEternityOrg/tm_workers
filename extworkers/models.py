@@ -33,6 +33,8 @@ class ExtWorkerRecord(models.Model):
     person_name = models.CharField(db_column='person_name', max_length=128)
     f_time = models.TimeField(db_column='f_time')
     t_time = models.TimeField(db_column='t_time')
+    p_city = models.CharField(db_column='city', max_length=128)
+    p_birthday = models.DateField(db_column='birthday')
 
     class Meta:
         db_table = 'extworkers_data'

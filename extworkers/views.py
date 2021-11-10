@@ -29,7 +29,7 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
     model = ExtWorkerRecord
     template_name = 'extworkers/person_edit.html'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
-    fields = ['person_name', 'f_time', 't_time']
+    fields = ['person_name', 'f_time', 't_time', 'p_city', 'p_birthday']
     title = 'Редактировать запись'
 
     def get_form(self, form_class=None):
@@ -38,6 +38,9 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
             {'class': 'special', 'required': True, 'placeholder': "Введите ФИО сотрудника"})
         form.fields['f_time'].widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
         form.fields['t_time'].widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
+        form.fields['p_city'].widget.attrs.update(
+            {'class': 'special', 'required': True, 'placeholder': "Место рождения сотрудника"})
+        form.fields['p_birthday'].widget.attrs.update({'data-format': 'yyyy-MM-dd', 'readonly': True, 'required': True})
         return form
 
     def get_context_data(self, object_list=None, **kwargs):
@@ -49,6 +52,8 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
         obj.person_name = request.POST['person_name']
         obj.f_time = request.POST['f_time']
         obj.t_time = request.POST['t_time']
+        obj.p_birthday = request.POST['p_birthday']
+        obj.p_city = request.POST['p_city']
         obj.save()
         return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'),)))
 
@@ -62,6 +67,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
 
     def get_form(self, form_class=None):
         form = super(PersonRecordAdd, self).get_form()
+        form.fields['p_birthday'].widget.attrs.update({'data-format': 'yyyy-MM-dd', 'readonly': True, 'required': True})
         return form
 
     def post(self, request, *args, **kwargs):

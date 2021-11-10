@@ -21,6 +21,20 @@
                             {{ form.person_name }}
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="small mb-1" for="{{ form.p_city.id_for_label }}">Место рожденния: </label>
+                            {{ form.p_city }}
+                        </div>
+                    </div>
+                    <label class="small mb-1" for="{{ form.p_birthday.id_for_label }}">Дата рождения: </label>
+                    <div id="p_birthday_picker" class="input-append">
+                        {{ form.p_birthday }}
+                        <span class="add-on">
+                            <i style="width: 14px; height: 14px; margin-top: -3px" data-time-icon="icon-time"
+                               data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div>
                     <label class="small mb-1" for="{{ form.f_time.id_for_label }}">Время начала работы: </label>
                     <div id="f_time_picker" class="input-append">
                         {{ form.f_time }}
