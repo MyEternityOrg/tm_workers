@@ -1,6 +1,7 @@
 {% extends 'extworkers/base.html' %}
 {% load static %}
 {% load custom_tags %}
+
 {% block css %}
     <link rel="stylesheet" type="text/css" media="screen"
           href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
@@ -8,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+    {% now "H" as current_hour %}
     <main>
         <div class="container-fluid">
             <h5 class="mt-4">Добавление сотрудника: </h5>

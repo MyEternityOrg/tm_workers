@@ -1,12 +1,13 @@
 {% extends 'extworkers/base.html' %}
 {% load static %}
+{% load custom_tags %}
+
 {% block content %}
-    {% load custom_tags %}
+    {% now "H" as current_hour %}
     <div class="card-body">
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
     </div>
-    {%  now "H" as current_hour %}
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid">
