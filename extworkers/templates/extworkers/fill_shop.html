@@ -1,11 +1,12 @@
 {% extends 'extworkers/base.html' %}
 {% load static %}
 {% block content %}
+    {% load custom_tags %}
     <div class="card-body">
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
     </div>
-
+    {%  now "H" as current_hour %}
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid">
@@ -45,10 +46,12 @@
                         {% else %}
                             <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                         {% endif %}
-                        <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid %}">
-                            <button class="btn btn-success">Добавить сотрудника ПРР.</button>
-                        </a>
-                        </div>
+                        {% if current_hour|to_int < 12 %}
+                            <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid %}">
+                                <button class="btn btn-success">Добавить сотрудника ПРР.</button>
+                            </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

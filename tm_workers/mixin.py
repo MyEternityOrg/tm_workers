@@ -8,7 +8,7 @@ from users.models import ProfileUser
 
 
 class UserIsAdminCheckMixin(View):
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, request, *args, **kwargs):
         return super(UserIsAdminCheckMixin, self).dispatch(request, *args, **kwargs)
 
