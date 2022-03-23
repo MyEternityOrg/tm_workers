@@ -12,7 +12,7 @@ from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 
-CONST_MAX_TIME = 15
+CONST_MAX_TIME = 12
 
 
 class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin):
