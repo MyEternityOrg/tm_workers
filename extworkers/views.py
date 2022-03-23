@@ -12,6 +12,8 @@ from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 
+CONST_MAX_TIME = 15
+
 
 class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
@@ -22,6 +24,7 @@ class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin)
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordDelete, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
+        context['max_hour'] = CONST_MAX_TIME
         context['staff'] = self.request.user.is_staff
         return context
 
@@ -52,6 +55,7 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordModify, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
+        context['max_hour'] = CONST_MAX_TIME
         context['staff'] = self.request.user.is_staff
         return context
 
@@ -83,6 +87,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordAdd, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
+        context['max_hour'] = CONST_MAX_TIME
         context['staff'] = self.request.user.is_staff
         return context
 
@@ -122,6 +127,7 @@ class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         ent = Enterprises.objects.get(guid=self.kwargs.get('pk'))
         context['enterprise'] = ent
         context['dts'] = self.kwargs.get('dts')
+        context['max_hour'] = CONST_MAX_TIME
         context['dts_arr'] = dts_arr
         context['staff'] = self.request.user.is_staff
         context['title'] = ent.name
@@ -145,5 +151,6 @@ class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdmin
     def get_context_data(self, object_list=None, **kwargs):
         context = super(ShopList, self).get_context_data(**kwargs)
         context['dts'] = datetime.strftime(datetime.now(), '%Y-%m-%d')
+        context['max_hour'] = CONST_MAX_TIME
         context['staff'] = self.request.user.is_staff
         return context

@@ -60,7 +60,7 @@
                             <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
                         </div>
                     </div>
-                {% elif current_hour|to_int < 12 %}
+                {% elif current_hour|to_int < max_hour %}
                     <div class="form-row">
                         <div class="col-lg-4" style="margin-top: 33px;">
                             <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
@@ -70,11 +70,11 @@
             </form>
             {% if staff %}
                 <form action="{% url 'tm_workers:person_delete' object.enterprise.guid dts object.guid %}"
-                      method="post" enctype="multipart/form-data" id="f_delete_adm">
+                      method="post" enctype="multipart/form-data" id="f_delete">
                     {% csrf_token %}
                     <input class="btn p-2 btn-flat btn-danger" type="submit" value="Удалить запись">
                 </form>
-            {% elif current_hour|to_int < 12 %}
+            {% elif current_hour|to_int < max_hour %}
                 <form action="{% url 'tm_workers:person_delete' object.enterprise.guid dts object.guid %}"
                       method="post" enctype="multipart/form-data" id="f_delete">
                     {% csrf_token %}

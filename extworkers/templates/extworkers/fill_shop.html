@@ -58,14 +58,14 @@
                             </div>
                             {% include 'extworkers/pagination.html' %}
                         {% else %}
-                            <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
+                            <div class="card-footer">{% if current_hour|to_int < max_hour %} Список пуст. Добавьте сотрудника. {% else %} Внимание! Добавлять записи можно только до {{ max_hour }}ч дня. {% endif %} </div>
                         {% endif %}
                         {% if staff %}
                             <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
                                 <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
                             </a>
                             </div>
-                        {% elif current_hour|to_int < 12 %}
+                        {% elif current_hour|to_int < max_hour %}
                             <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
                                 <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
                             </a>

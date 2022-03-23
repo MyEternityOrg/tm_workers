@@ -5,8 +5,8 @@ const f_delete = document.getElementById('f_delete');
 const p_name = document.getElementById('id_person_name');
 const p_city = document.getElementById('id_p_city');
 const p_birthday = document.getElementById('id_p_birthday');
-
-const max_hour = 12
+const max_hour = document.getElementById('js_validate').getAttribute('hour');
+const staff = document.getElementById('js_validate').getAttribute('staff');
 
 $(function () {
     $('#f_time_picker').datetimepicker({
@@ -71,13 +71,19 @@ function get_current_age(_date) {
         : year_diff - 1;
 }
 
-f_delete.addEventListener('submit', function (e) {
-    let current_hour = new Date().getHours()
-    if (current_hour >= 12) {
-        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данную запись нельзя удалить после '+max_hour+':00 текущего дня!</div></p>'
-        e.preventDefault()
-    } else {}
-});
+
+try {
+    f_delete.addEventListener('submit', function (e) {
+        let current_hour = new Date().getHours()
+        if (!staff) {
+            if (current_hour >= max_hour) {
+                result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данную запись нельзя удалить после ' + max_hour + ':00 текущего дня!</div></p>'
+                e.preventDefault()
+            } else {
+            }
+        }
+    });
+} catch (e) {}
 
 
 f_main.addEventListener('submit', function (e) {
@@ -86,17 +92,24 @@ f_main.addEventListener('submit', function (e) {
     let current_hour = new Date().getHours()
     fd.setHours.apply(fd, f_time.value.split(":"));
     td.setHours.apply(td, t_time.value.split(":"));
+    let interval = td - fd
+
     if (fd >= td) {
         result.innerHTML = '<p><div class="alert alert-danger" role="alert">Введен некоррекнтый интервал! Проверьте что время начала работы не больше времени завершения!</div></p>'
+        e.preventDefault();
+    } else if (interval > 46800000) {
+        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Подолжительность рабочего дня не может превышать 13 часов!</div></p>'
         e.preventDefault();
     }
     if (!test_fio(p_name.value)) {
         result.innerHTML = '<p><div class="alert alert-danger" role="alert">Для сотрудника введены некорректные данные. <br>Требуется: <b>Фамилия Имя</b> или <b>Фамилия Имя Отчество</b>.</div></p>'
         e.preventDefault();
     }
-    if (current_hour >= 12) {
-        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данные нельзя редактировать/создавать после '+max_hour+':00 текущего дня!</div></p>'
-        e.preventDefault()
+    if (!staff) {
+        if (current_hour >= max_hour) {
+            result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данные нельзя редактировать/создавать после ' + max_hour + ':00 текущего дня!</div></p>'
+            e.preventDefault()
+        }
     }
     let age = get_current_age(p_birthday.value)
     if (age >= 18) {
