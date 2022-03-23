@@ -5,14 +5,27 @@
 {% block content %}
     {% now "H" as current_hour %}
     <div class="card-body">
-        <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>
-        <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
+        {% if staff %}
+            <div class="d-inline p-2 bg-black bg-opacity-75 text-white"><a class="text-decoration-none text-white"
+                                                                           href="{% url 'tm_workers:fill_data' %}"><i
+                    class="fas fa-arrow-up"></i> Подразделение: {{ enterprise }}</a></div>
+            <div class="d-inline p-2 bg-black bg-opacity-75 text-white"> Даты:&nbsp;
+                {% for dts_c in dts_arr %}
+                    <div class="d-inline p-2 bg-opacity-50 text-white {% if dts_c == dts %} bg-primary {% else %} bg-black {% endif %} ">
+                        <a class="text-decoration-none text-white"
+                           href="{% url 'tm_workers:fill_data_shop' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>
+            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
+        {% endif %}
     </div>
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid">
                 <div class="card mb-4">
-                    <div class="card-header"><i class="fas fa-table mr-1"></i>Список сотрудников</div>
+                    <div class="card-header"><i class="fas fa-table mr-1"></i> Список сотрудников</div>
                     <div class="card-body">
                         {% if object_list %}
                             <div class="table-responsive">
@@ -31,7 +44,7 @@
                                     <tbody>
                                     {% for item in object_list %}
                                         <tr class='clickable-row'
-                                            data-href="{% url 'tm_workers:person_edit' item.enterprise.guid item.guid %}">
+                                            data-href="{% url 'tm_workers:person_edit' item.enterprise.guid dts item.guid %}">
                                             <td>{{ item.dts }}</td>
                                             <td>{{ item.enterprise.enterprise_code }}</td>
                                             <td>{{ item.enterprise.name }}</td>
@@ -47,9 +60,14 @@
                         {% else %}
                             <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                         {% endif %}
-                        {% if current_hour|to_int < 12 %}
-                            <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid %}">
-                                <button class="btn btn-success">Добавить сотрудника ПРР.</button>
+                        {% if staff %}
+                            <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
+                                <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
+                            </a>
+                            </div>
+                        {% elif current_hour|to_int < 12 %}
+                            <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
+                                <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
                             </a>
                             </div>
                         {% endif %}

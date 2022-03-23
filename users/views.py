@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
@@ -32,7 +34,8 @@ class UserLogin(LoginView, BaseClassContextMixin):
                     if user.is_staff:
                         return redirect('tm_workers:fill_data')
                     else:
-                        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(profile.ent_guid,)))
+                        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(
+                            profile.ent_guid, datetime.strftime(datetime.now(), '%Y-%m-%d'),)))
                 else:
                     return redirect('users:user_login')
         return response
@@ -47,6 +50,7 @@ class UserLogin(LoginView, BaseClassContextMixin):
                 return redirect('tm_workers:fill_data')
             else:
                 profile = ProfileUser.get_profile_by_user_id(auth.id)
-                return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(profile.ent_guid,)))
+                return redirect(reverse_lazy('tm_workers:fill_data_shop',
+                                             args=(profile.ent_guid, datetime.strftime(datetime.now(), '%Y-%m-%d'),)))
         else:
             return redirect('users:user_login')

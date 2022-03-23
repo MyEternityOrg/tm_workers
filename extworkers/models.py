@@ -29,7 +29,7 @@ class ExtWorkerRecord(models.Model):
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column='guid')
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     enterprise = models.ForeignKey(Enterprises, db_column='enterprise_guid', on_delete=models.CASCADE)
-    dts = models.DateField(db_column='dts', auto_now_add=True)
+    dts = models.DateField(db_column='dts')
     person_name = models.CharField(db_column='person_name', max_length=128)
     f_time = models.TimeField(db_column='f_time')
     t_time = models.TimeField(db_column='t_time')

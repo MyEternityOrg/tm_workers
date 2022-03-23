@@ -11,6 +11,7 @@ class UpdateRecordForm(forms.ModelForm):
     t_time = forms.TimeField()
     p_city = forms.CharField()
     p_birthday = forms.DateField()
+    dts = forms.DateField()
 
     guid.widget.attrs.update({'class': 'special', 'readonly': True})
     person_name.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Введите ФИО сотрудника"})
@@ -21,7 +22,8 @@ class UpdateRecordForm(forms.ModelForm):
 
     class Meta:
         model = ExtWorkerRecord
-        exclude = ('dts',)
+        fields = '__all__'
+        # exclude = ('dts',)
 
     def __init__(self, *args, **kwargs):
         super(UpdateRecordForm, self).__init__(*args, **kwargs)
@@ -44,6 +46,7 @@ class CreateRecordForm(forms.ModelForm):
     t_time = forms.TimeField()
     p_city = forms.CharField()
     p_birthday = forms.DateField()
+    dts = forms.DateField()
 
     person_name.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Введите ФИО сотрудника"})
     p_city.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Место рождения сотрудника"})
@@ -53,7 +56,8 @@ class CreateRecordForm(forms.ModelForm):
 
     class Meta:
         model = ExtWorkerRecord
-        exclude = ('dts',)
+        fields = '__all__'
+        # exclude = ('dts',)
 
     def clean(self):
         cleaned_data = super().clean()

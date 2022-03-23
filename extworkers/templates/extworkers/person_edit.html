@@ -11,8 +11,8 @@
     {% now "H" as current_hour %}
     <main>
         <div class="container-fluid">
-            <h5 class="mt-4">Редактирование записи: </h5>
-            <form action="{% url 'tm_workers:person_edit' object.enterprise.guid object.guid %}" method="post"
+            <h5 class="mt-4"> Редактирование записи: </h5>
+            <form action="{% url 'tm_workers:person_edit' object.enterprise.guid dts object.guid %}" method="post"
                   enctype="multipart/form-data" id="f_main">
                 {% csrf_token %}
                 <div class="form-row">
@@ -54,22 +54,32 @@
                     </div>
                 </div>
                 <span id="result"></span>
-                {% if current_hour|to_int < 12 %}
+                {% if staff %}
                     <div class="form-row">
                         <div class="col-lg-4" style="margin-top: 33px;">
-                            <input class="btn btn-info btn-primary btn-lg" type="submit" value="Сохранить">
+                            <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
+                        </div>
+                    </div>
+                {% elif current_hour|to_int < 12 %}
+                    <div class="form-row">
+                        <div class="col-lg-4" style="margin-top: 33px;">
+                            <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
                         </div>
                     </div>
                 {% endif %}
             </form>
-            {% if current_hour|to_int < 12 %}
-                <div class="col-lg-4" style="margin-top: 33px;">
-                    <form action="{% url 'tm_workers:person_delete' object.enterprise.guid object.guid %}"
-                          method="post" enctype="multipart/form-data" id="f_delete">
-                        {% csrf_token %}
-                        <input class="btn btn-danger btn-primary btn-lg" type="submit" value="Удалить запись">
-                    </form>
-                </div>
+            {% if staff %}
+                <form action="{% url 'tm_workers:person_delete' object.enterprise.guid dts object.guid %}"
+                      method="post" enctype="multipart/form-data" id="f_delete_adm">
+                    {% csrf_token %}
+                    <input class="btn p-2 btn-flat btn-danger" type="submit" value="Удалить запись">
+                </form>
+            {% elif current_hour|to_int < 12 %}
+                <form action="{% url 'tm_workers:person_delete' object.enterprise.guid dts object.guid %}"
+                      method="post" enctype="multipart/form-data" id="f_delete">
+                    {% csrf_token %}
+                    <input class="btn p-2 btn-flat btn-danger" type="submit" value="Удалить запись">
+                </form>
             {% endif %}
         </div>
     </main>

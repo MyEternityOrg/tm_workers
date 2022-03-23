@@ -6,6 +6,8 @@ const p_name = document.getElementById('id_person_name');
 const p_city = document.getElementById('id_p_city');
 const p_birthday = document.getElementById('id_p_birthday');
 
+const max_hour = 12
+
 $(function () {
     $('#f_time_picker').datetimepicker({
         pickDate: false,
@@ -72,7 +74,7 @@ function get_current_age(_date) {
 f_delete.addEventListener('submit', function (e) {
     let current_hour = new Date().getHours()
     if (current_hour >= 12) {
-        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данную запись нельзя удалить после 12:00 текущего дня!</div></p>'
+        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данную запись нельзя удалить после '+max_hour+':00 текущего дня!</div></p>'
         e.preventDefault()
     } else {}
 });
@@ -93,7 +95,7 @@ f_main.addEventListener('submit', function (e) {
         e.preventDefault();
     }
     if (current_hour >= 12) {
-        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данные нельзя редактировать/создавать после 12:00 текущего дня!</div></p>'
+        result.innerHTML = '<p><div class="alert alert-danger" role="alert">Данные нельзя редактировать/создавать после '+max_hour+':00 текущего дня!</div></p>'
         e.preventDefault()
     }
     let age = get_current_age(p_birthday.value)
