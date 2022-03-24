@@ -58,7 +58,9 @@
                             </div>
                             {% include 'extworkers/pagination.html' %}
                         {% else %}
-                            <div class="card-footer">{% if current_hour|to_int < max_hour %} Список пуст. Добавьте сотрудника. {% else %} Внимание! Добавлять записи можно только до {{ max_hour }}ч дня. {% endif %} </div>
+                            <div class="card-footer">{% if current_hour|to_int < max_hour %} Список пуст. Добавьте
+                                сотрудника. {% else %} Внимание! Добавлять записи можно только до {{ max_hour }}ч
+                                дня. {% endif %} </div>
                         {% endif %}
                         {% if staff %}
                             <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
@@ -73,6 +75,44 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if history_data %}
+                    <div>
+                        <div class="card-header"><i class="fas fa-table mr-1"></i> История изменений</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable" class="table table-bordered table-hover" width="100%"
+                                       cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Дата/время</th>
+                                        <th>Вид изменения</th>
+                                        <th>Автор</th>
+                                        <th>Сотрудник ПРР</th>
+                                        <th>Время начала работы</th>
+                                        <th>Время завершения работы</th>
+                                        <th>Адрес регистрации</th>
+                                        <th>Дата рождения</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in history_data %}
+                                        <td>{{ item.change_time }}</td>
+                                        <td>{{ item.action }}</td>
+                                        <td>{{ item.author }}</td>
+                                        <td>{{ item.person_name }}</td>
+                                        <td>{{ item.f_time }}</td>
+                                        <td>{{ item.t_time }}</td>
+                                        <td>{{ item.p_city }}</td>
+                                        <td>{{ item.p_birthday }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
         </main>
     </div>

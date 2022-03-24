@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from extworkers.forms import CreateRecordForm
-from extworkers.models import Enterprises, ExtWorkerRecord
+from extworkers.models import Enterprises, ExtWorkerRecord, ExtWorkerRecordHistory
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 
 CONST_MAX_TIME = 12
@@ -68,6 +68,8 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
         obj.t_time = request.POST['t_time']
         obj.p_birthday = request.POST['p_birthday']
         obj.p_city = request.POST['p_city']
+        obj.author = request.user.username
+        # obj.author = request.POST[]
         obj.save()
         return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
 
@@ -96,6 +98,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
         post['guid'] = uuid.uuid4()
         post['dts'] = datetime.strptime(self.kwargs.get('dts'), '%Y-%m-%d').date()
         post['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('pk'))
+        post['author'] = request.user.username
         form = CreateRecordForm(post)
         if form.is_valid():
             form.save()
@@ -131,6 +134,11 @@ class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context['dts_arr'] = dts_arr
         context['staff'] = self.request.user.is_staff
         context['title'] = ent.name
+        if self.request.user.is_staff:
+            context['history_data'] = ExtWorkerRecordHistory.objects.filter(
+                enterprise_guid=ent.guid,
+                dts=self.kwargs.get('dts')
+            ).order_by('data_guid', '-change_time')
         return context
 
 
