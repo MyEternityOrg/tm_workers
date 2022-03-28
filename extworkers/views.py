@@ -154,7 +154,12 @@ class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdmin
         super().__init__(**kwargs)
 
     def get_queryset(self):
-        return self.model.get_list_shops()
+        nn = self.request.GET.get('id')
+        if nn is not None:
+            return self.model.get_list_shops().filter(name__contains=nn)
+        else:
+            return self.model.get_list_shops()
+
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(ShopList, self).get_context_data(**kwargs)
