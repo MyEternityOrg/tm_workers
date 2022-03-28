@@ -29,8 +29,7 @@
                     <div class="card-body">
                         {% if object_list %}
                             <div class="table-responsive">
-                                <table id="datatable" class="table table-bordered table-hover" width="100%"
-                                       cellspacing="0">
+                                <table id="datatable" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Дата</th>
@@ -80,8 +79,7 @@
                         <div class="card-header"><i class="fas fa-table mr-1"></i> История изменений</div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="datatable" class="table table-bordered table-hover" width="100%"
-                                       cellspacing="0">
+                                <table id="datatable" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Дата/время</th>
@@ -96,14 +94,15 @@
                                     </thead>
                                     <tbody>
                                     {% for item in history_data %}
-                                        <td>{{ item.change_time }}</td>
-                                        <td>{{ item.action }}</td>
-                                        <td>{{ item.author }}</td>
-                                        <td>{{ item.person_name }}</td>
-                                        <td>{{ item.f_time }}</td>
-                                        <td>{{ item.t_time }}</td>
-                                        <td>{{ item.p_city }}</td>
-                                        <td>{{ item.p_birthday }}</td>
+                                        <tr>
+                                            <td>{{ item.change_time }}</td>
+                                            <td>{{ item.action }}</td>
+                                            <td>{{ item.author }}</td>
+                                            <td>{{ item.person_name }}</td>
+                                            <td>{{ item.f_time }}</td>
+                                            <td>{{ item.t_time }}</td>
+                                            <td>{{ item.p_city }}</td>
+                                            <td>{{ item.p_birthday }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

@@ -7,7 +7,6 @@
                             {% if page_obj.has_previous %}
                        href="{{ request.path }}?page={{ page_obj.previous_page_number }}" {% else %}
                        href="#" {% endif %}  aria-label="Previous">Назад</a>
-                    </a>
                 </li>
                 {% for item in page_obj.paginator %}
                     <li class="page-item "><a
@@ -20,7 +19,6 @@
                             {% if page_obj.has_next %}
                        href="{{ request.path }}?page={{ page_obj.next_page_number }}" {% else %}
                        href="#" {% endif %} aria-label="Next">Далее</a>
-                    </a>
                 </li>
             </ul>
         </nav>
