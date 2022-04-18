@@ -9,6 +9,9 @@ from django.views.generic.base import ContextMixin
 from users.models import ProfileUser
 
 
+CONST_MAX_TIME = 12
+CONST_MAX_HOURS = 11
+
 class UserIsAdminCheckMixin(View):
     @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, request, *args, **kwargs):
@@ -43,4 +46,6 @@ class BaseClassContextMixin(ContextMixin):
     def get_context_data(self, **kwargs):
         context = super(BaseClassContextMixin, self).get_context_data(**kwargs)
         context['title'] = self.title
+        context['max_hour'] = CONST_MAX_TIME
+        context['max_hours'] = CONST_MAX_HOURS
         return context

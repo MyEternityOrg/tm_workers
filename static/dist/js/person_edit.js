@@ -7,6 +7,7 @@ const p_city = document.getElementById('id_p_city');
 const p_birthday = document.getElementById('id_p_birthday');
 const max_hour = document.getElementById('js_validate').getAttribute('hour');
 const staff = document.getElementById('js_validate').getAttribute('staff');
+const max_interval_hours = document.getElementById('js_validate').getAttribute('max_hours');
 
 $(function () {
     $('#f_time_picker').datetimepicker({
@@ -92,6 +93,7 @@ try {
 
 try {
     f_main.addEventListener('submit', function (e) {
+        let max_interval = max_interval_hours * 60 * 60 * 1000
         let fd = new Date()
         let td = new Date()
         let current_hour = new Date().getHours()
@@ -102,8 +104,8 @@ try {
         if (fd >= td) {
             result.innerHTML = '<p><div class="alert alert-danger" role="alert">Введен некоррекнтый интервал! Проверьте что время начала работы не больше времени завершения!</div></p>'
             e.preventDefault();
-        } else if (interval > 46800000) {
-            result.innerHTML = '<p><div class="alert alert-danger" role="alert">Подолжительность рабочего дня не может превышать 13 часов!</div></p>'
+        } else if (interval > max_interval) {
+            result.innerHTML = '<p><div class="alert alert-danger" role="alert">Подолжительность рабочего дня не может превышать '+ max_interval_hours +' часов!</div></p>'
             e.preventDefault();
         }
         if (!test_fio(p_name.value)) {
