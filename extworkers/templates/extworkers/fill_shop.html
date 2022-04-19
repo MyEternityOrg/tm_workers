@@ -1,4 +1,4 @@
-{% extends 'extworkers/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load custom_tags %}
 
@@ -55,7 +55,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            {% include 'extworkers/pagination.html' %}
+                            {% include 'pagination.html' %}
                         {% else %}
                             <div class="card-footer">{% if current_hour|to_int < max_hour %} Список пуст. Добавьте
                                 сотрудника. {% else %} Внимание! Добавлять записи можно только до {{ max_hour }}ч
