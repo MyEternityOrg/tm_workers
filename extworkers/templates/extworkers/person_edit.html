@@ -12,7 +12,7 @@
     <main>
         <div class="container-fluid">
             <h5 class="mt-4"> Редактирование записи: </h5>
-            <form action="{% url 'tm_workers:person_edit' object.enterprise.guid dts object.guid %}" method="post"
+            <form action="{% url 'extworkers:person_edit' object.enterprise.guid dts object.guid %}" method="post"
                   enctype="multipart/form-data" id="f_main">
                 {% csrf_token %}
                 <div class="form-row">
@@ -69,13 +69,13 @@
                 {% endif %}
             </form>
             {% if staff %}
-                <form action="{% url 'tm_workers:person_delete' object.enterprise.guid dts object.guid %}"
+                <form action="{% url 'extworkers:person_delete' object.enterprise.guid dts object.guid %}"
                       method="post" enctype="multipart/form-data" id="f_delete">
                     {% csrf_token %}
                     <input class="btn p-2 btn-flat btn-danger" type="submit" value="Удалить запись">
                 </form>
             {% elif current_hour|to_int < max_hour %}
-                <form action="{% url 'tm_workers:person_delete' object.enterprise.guid dts object.guid %}"
+                <form action="{% url 'extworkers:person_delete' object.enterprise.guid dts object.guid %}"
                       method="post" enctype="multipart/form-data" id="f_delete">
                     {% csrf_token %}
                     <input class="btn p-2 btn-flat btn-danger" type="submit" value="Удалить запись">

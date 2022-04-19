@@ -7,13 +7,13 @@
     <div class="card-body">
         {% if staff %}
             <div class="d-inline p-2 bg-black bg-opacity-75 text-white"><a class="text-decoration-none text-white"
-                                                                           href="{% url 'tm_workers:fill_data' %}"><i
+                                                                           href="{% url 'extworkers:fill_data' %}"><i
                     class="fas fa-arrow-up"></i> Подразделение: {{ enterprise }}</a></div>
             <div class="d-inline p-2 bg-black bg-opacity-75 text-white"> Даты:&nbsp;
                 {% for dts_c in dts_arr %}
                     <div class="d-inline p-2 bg-opacity-50 text-white {% if dts_c == dts %} bg-primary {% else %} bg-black {% endif %} ">
                         <a class="text-decoration-none text-white"
-                           href="{% url 'tm_workers:fill_data_shop' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
+                           href="{% url 'extworkers:fill_data_shop' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
                 {% endfor %}
             </div>
         {% else %}
@@ -43,7 +43,7 @@
                                     <tbody>
                                     {% for item in object_list %}
                                         <tr class='clickable-row'
-                                            data-href="{% url 'tm_workers:person_edit' item.enterprise.guid dts item.guid %}">
+                                            data-href="{% url 'extworkers:person_edit' item.enterprise.guid dts item.guid %}">
                                             <td>{{ item.dts }}</td>
                                             <td>{{ item.enterprise.enterprise_code }}</td>
                                             <td>{{ item.enterprise.name }}</td>
@@ -62,12 +62,12 @@
                                 дня. {% endif %} </div>
                         {% endif %}
                         {% if staff %}
-                            <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
+                            <div class="card-footer"><a href="{% url 'extworkers:person_add' enterprise.guid dts %}">
                                 <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
                             </a>
                             </div>
                         {% elif current_hour|to_int < max_hour %}
-                            <div class="card-footer"><a href="{% url 'tm_workers:person_add' enterprise.guid dts %}">
+                            <div class="card-footer"><a href="{% url 'extworkers:person_add' enterprise.guid dts %}">
                                 <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
                             </a>
                             </div>

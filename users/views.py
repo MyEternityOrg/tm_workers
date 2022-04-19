@@ -32,9 +32,9 @@ class UserLogin(LoginView, BaseClassContextMixin):
             if user:
                 if user.is_active:
                     if user.is_staff:
-                        return redirect('tm_workers:fill_data')
+                        return redirect('extworkers:fill_data')
                     else:
-                        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(
+                        return redirect(reverse_lazy('extworkers:fill_data_shop', args=(
                             profile.ent_guid, datetime.strftime(datetime.now(), '%Y-%m-%d'),)))
                 else:
                     return redirect('users:user_login')
@@ -47,10 +47,10 @@ class UserLogin(LoginView, BaseClassContextMixin):
         login(request, auth)
         if auth.is_active:
             if auth.is_staff:
-                return redirect('tm_workers:fill_data')
+                return redirect('extworkers:fill_data')
             else:
                 profile = ProfileUser.get_profile_by_user_id(auth.id)
-                return redirect(reverse_lazy('tm_workers:fill_data_shop',
+                return redirect(reverse_lazy('extworkers:fill_data_shop',
                                              args=(profile.ent_guid, datetime.strftime(datetime.now(), '%Y-%m-%d'),)))
         else:
             return redirect('users:user_login')

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'extworkers.apps.ExtworkersConfig',
+    'security.apps.SecurityConfig',
+    'cleaning.apps.CleaningConfig',
     'users',
 ]
 
