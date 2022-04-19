@@ -8,6 +8,7 @@
 (function ($) {
     $('.clickable-row_np').css('cursor', 'pointer');
     $(".clickable-row_np").click(function () {
-        window.open($(this).data("href"), "_blank");
+        window.location = $(this).data("href");
+        // window.open($(this).data("href"), "_blank");
     });
-})(jQuery)
+})(jQuery);

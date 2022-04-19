@@ -17,19 +17,37 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                {% if user.is_active %}
-                    <a class="nav-link" href="{% url 'users:user_logout' %}">Пользователь: {{ user.username }}<span
-                            class="sr-only">(current)</span> <i class="fas fa-sign-out-alt"></i></a>
-                {% else %}
-                    <a class="nav-link" href="{% url 'users:user_login' %}">Войти<span
-                            class="sr-only">(current)</span> <i class="fas fa-cog fa-fw"></i></a>
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Тип табеля
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if staff %}
+                            <li><a class="dropdown-item" href="{% url 'extworkers:fill_data' %}">ПРР</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item"
+                                   href="{% url 'extworkers:fill_data_shop' enterprise.guid dts %}">ПРР</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item disabled" href="#">Клининг (в процессе разработки)</a></li>
+                        <li><a class="dropdown-item disabled" href="#">ЧОП (в процессе разработки)</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item active">
+                    {% if user.is_active %}
+                        <a class="nav-link" href="{% url 'users:logout' %}">Пользователь: {{ user.username }}<span
+                                class="sr-only">(current)</span> <i class="fas fa-sign-out-alt"></i></a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'users:login' %}">Войти<span
+                                class="sr-only">(current)</span> <i class="fas fa-cog fa-fw"></i></a>
 
-                {% endif %}
-            </li>
-        </ul>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 {% block content %}
@@ -45,6 +63,7 @@
 </footer>
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'plugins/Datatables/datatables.js' %}"></script>
 <script src="{% static 'plugins/Datatables/datatables.min.js' %}"></script>
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

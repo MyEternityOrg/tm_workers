@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if profile_error and not staff %}
+            <div class="bg-light text-black">
+                <h4 class="text-cyan">{{ profile_error }}</h4>
+            </div>
+        {% else %}
+            <div class="bg-light text-black">
+                <h4 class="shadow-sm">Выберите тип табеля в меню, чтобы продолжить работу.</h4>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -12,9 +12,10 @@ from extworkers.forms import CreateRecordForm
 from extworkers.models import Enterprises, ExtWorkerRecord, ExtWorkerRecordHistory
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 
+
 class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
-    title = 'Удалить запись'
+    title = 'ПРР: Удалить запись'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
     template_name = 'extworkers/person_edit.html'
 
@@ -35,7 +36,7 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
     template_name = 'extworkers/person_edit.html'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
     fields = ['person_name', 'f_time', 't_time', 'p_city', 'p_birthday']
-    title = 'Редактировать запись'
+    title = 'ПРР: Редактировать запись'
 
     def get_form(self, form_class=None):
         form = super(PersonRecordModify, self).get_form()
@@ -74,7 +75,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     template_name = 'extworkers/person_add.html'
     success_url = reverse_lazy('tm_workers:fill_data_shop')
     form_class = CreateRecordForm
-    title = 'Добавить сотрудника'
+    title = 'ПРР: Добавить сотрудника'
 
     def get_form(self, form_class=None):
         form = super(PersonRecordAdd, self).get_form()
@@ -107,8 +108,8 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
 class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/fill_shop.html'
-    success_url = reverse_lazy('tm_workers:fill_data')
-    paginate_by = 5
+    success_url = reverse_lazy('extworkers:fill_data_shop')
+    paginate_by = 10
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -126,7 +127,7 @@ class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context['dts'] = self.kwargs.get('dts')
         context['dts_arr'] = dts_arr
         context['staff'] = self.request.user.is_staff
-        context['title'] = ent.name
+        context['title'] = "ПРР: " + ent.name
         if self.request.user.is_staff:
             context['history_data'] = ExtWorkerRecordHistory.objects.filter(
                 enterprise_guid=ent.guid,
@@ -139,9 +140,9 @@ class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdmin
     model = Enterprises
     template_name = 'extworkers/list_shop.html'
     fields = ['enterprise_code', 'name']
-    success_url = reverse_lazy('extworkers/list_shop.html')
+    success_url = reverse_lazy('extworkers:fill_data')
     paginate_by = 30
-    title = 'Список подразделений'
+    title = 'ПРР: Список подразделений'
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -8,7 +8,6 @@ from django.views.generic.base import ContextMixin
 
 from users.models import ProfileUser
 
-
 CONST_MAX_TIME = 12
 CONST_MAX_HOURS = 11
 
@@ -26,7 +25,6 @@ class UserLoginCheckMixin(View):
         if dts_str is not None:
             dts = datetime.strptime(dts_str, '%Y-%m-%d').date()
         profile = ProfileUser.get_profile_by_user_id(request.user.id)
-
         if request.user.is_active:
             if request.user.is_staff and dts <= datetime.now().date():
                 return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
