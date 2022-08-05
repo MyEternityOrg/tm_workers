@@ -5,21 +5,20 @@
 {% block content %}
     {% now "H" as current_hour %}
     <div class="card-body">
-        {% if staff %}
-            <div class="d-inline p-2 bg-black bg-opacity-75 text-white"><a class="text-decoration-none text-white"
-                                                                           href="{% url 'extworkers:fill_data' %}"><i
-                    class="fas fa-arrow-up"></i> Подразделение: {{ enterprise }}</a></div>
-            <div class="d-inline p-2 bg-black bg-opacity-75 text-white"> Даты:&nbsp;
-                {% for dts_c in dts_arr %}
-                    <div class="d-inline p-2 bg-opacity-50 text-white {% if dts_c == dts %} bg-primary {% else %} bg-black {% endif %} ">
-                        <a class="text-decoration-none text-white"
-                           href="{% url 'extworkers:fill_data_shop' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>
-            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>
-        {% endif %}
+        <div class="d-inline p-2 bg-black bg-opacity-75 text-white"><a class="text-decoration-none text-white"
+                                                                       href="{% if staff %} {% url 'extworkers:fill_data' %} {% else %} # {% endif %}"><i
+                class="fas fa-arrow-up"></i> Подразделение: {{ enterprise }}</a></div>
+        <div class="d-inline p-2 bg-black bg-opacity-75 text-white"> Даты:&nbsp;
+            {% for dts_c in dts_arr %}
+                <div class="d-inline p-2 bg-opacity-50 text-white {% if dts_c == dts %} bg-primary {% else %} bg-black {% endif %} ">
+                    <a class="text-decoration-none text-white"
+                       href="{% url 'extworkers:fill_data_shop' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
+            {% endfor %}
+        </div>
+        {#        {% else %}#}
+        {#            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>#}
+        {#            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>#}
+        {#        {% endif %}#}
     </div>
     <div id="layoutSidenav_content">
         <main>
@@ -43,7 +42,7 @@
                                     <tbody>
                                     {% for item in object_list %}
                                         <tr class='clickable-row'
-                                            data-href="{% url 'extworkers:person_edit' item.enterprise.guid dts item.guid %}">
+                                            data-href="{% if not ro %} {% url 'extworkers:person_edit' item.enterprise.guid dts item.guid %} {% else %} # {% endif %}">
                                             <td>{{ item.dts }}</td>
                                             <td>{{ item.enterprise.enterprise_code }}</td>
                                             <td>{{ item.enterprise.name }}</td>
@@ -60,9 +59,13 @@
                             {% if staff %}
                                 <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                             {% else %}
-                                <div class="card-footer">{% if current_hour|to_int < max_hour %} Список пуст. Добавьте
-                                    сотрудника. {% else %} Внимание! Добавлять записи можно только до {{ max_hour }}ч
-                                    дня. {% endif %} </div>
+                                {% if not ro %}
+                                    <div class="card-footer">{% if current_hour|to_int < max_hour %} Список пуст.
+                                        Добавьте
+                                        сотрудника. {% else %} Внимание! Добавлять записи можно только до {{ max_hour }}
+                                        ч
+                                        дня. {% endif %} </div>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                         {% if staff %}
@@ -71,10 +74,13 @@
                             </a>
                             </div>
                         {% elif current_hour|to_int < max_hour %}
-                            <div class="card-footer"><a href="{% url 'extworkers:person_add' enterprise.guid dts %}">
-                                <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
-                            </a>
-                            </div>
+                            {% if not ro %}
+                                <div class="card-footer"><a
+                                        href="{% url 'extworkers:person_add' enterprise.guid dts %}">
+                                    <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
+                                </a>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

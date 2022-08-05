@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.contrib import messages
 from django.http import HttpResponse
@@ -16,25 +16,26 @@ from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsA
 class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     title = 'ПРР: Удалить запись'
-    success_url = reverse_lazy('tm_workers:fill_data_shop')
+    success_url = reverse_lazy('extworkers:fill_data_shop')
     template_name = 'extworkers/person_edit.html'
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordDelete, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
         context['staff'] = self.request.user.is_staff
+        context['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('pk'))
         return context
 
     def post(self, request, *args, **kwargs):
-        obj = ExtWorkerRecord.objects.filter(dts=self.kwargs.get('dts')).get(guid=self.kwargs.get('pk'))
+        obj = ExtWorkerRecord.objects.get(guid=self.kwargs.get('pk'))
         obj.delete()
-        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
+        return redirect(reverse_lazy('extworkers:fill_data_shop', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
 
 
 class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_edit.html'
-    success_url = reverse_lazy('tm_workers:fill_data_shop')
+    success_url = reverse_lazy('extworkers:fill_data_shop')
     fields = ['person_name', 'f_time', 't_time', 'p_city', 'p_birthday']
     title = 'ПРР: Редактировать запись'
 
@@ -53,6 +54,7 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
         context = super(PersonRecordModify, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
         context['staff'] = self.request.user.is_staff
+        context['enterprise'] = Enterprises.objects.get(guid=context['extworkerrecord'].enterprise_id)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -67,13 +69,13 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
         obj.author = request.user.username
         # obj.author = request.POST[]
         obj.save()
-        return redirect(reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
+        return redirect(reverse_lazy('extworkers:fill_data_shop', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
 
 
 class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/person_add.html'
-    success_url = reverse_lazy('tm_workers:fill_data_shop')
+    success_url = reverse_lazy('extworkers:fill_data_shop')
     form_class = CreateRecordForm
     title = 'ПРР: Добавить сотрудника'
 
@@ -86,6 +88,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
         context = super(PersonRecordAdd, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
         context['staff'] = self.request.user.is_staff
+        context['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('pk'))
         return context
 
     def post(self, request, *args, **kwargs):
@@ -99,7 +102,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
             form.save()
             messages.success(request, 'Данные сохранены!')
             return redirect(
-                reverse_lazy('tm_workers:fill_data_shop', args=(self.kwargs.get('pk'), self.kwargs.get('dts'))))
+                reverse_lazy('extworkers:fill_data_shop', args=(self.kwargs.get('pk'), self.kwargs.get('dts'))))
         else:
             messages.warning(request, 'Ошибка данных!')
             return HttpResponse("Некорректные данные формы!")
@@ -128,6 +131,10 @@ class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context['dts_arr'] = dts_arr
         context['staff'] = self.request.user.is_staff
         context['title'] = "ПРР: " + ent.name
+        if date.today() != datetime.strptime(context['dts'], '%Y-%m-%d').date():
+            context['ro'] = True
+        else:
+            context['ro'] = False
         if self.request.user.is_staff:
             context['history_data'] = ExtWorkerRecordHistory.objects.filter(
                 enterprise_guid=ent.guid,
@@ -153,7 +160,6 @@ class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdmin
             return self.model.get_list_shops().filter(name__contains=nn)
         else:
             return self.model.get_list_shops()
-
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(ShopList, self).get_context_data(**kwargs)

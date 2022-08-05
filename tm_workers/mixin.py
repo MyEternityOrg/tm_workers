@@ -30,7 +30,8 @@ class UserLoginCheckMixin(View):
                 return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
             else:
                 if (profile.ent_guid == kwargs.get('dv') or profile.ent_guid == kwargs.get(
-                        'pk')) and dts == datetime.now().date():
+                        # 'pk')) and dts == datetime.now().date():
+                        'pk')):
                     return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
                 else:
                     return HttpResponseNotAllowed(request.method)
