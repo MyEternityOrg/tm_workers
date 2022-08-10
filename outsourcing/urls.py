@@ -18,13 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
+from outsourcing.views import OutsourcingIndex, OutsourcingTypes
+
+
+app_name = 'outsourcing'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('users.urls'), name='index'),
-    path('extworkers/', include('extworkers.urls'), name='extworkers'),
-    path('security/', include('security.urls'), name='security'),
-    path('cleaning/', include('cleaning.urls'), name='cleaning'),
-    path('outsourcing/', include('outsourcing.urls'), name='outsourcing'),
-    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                path('', OutsourcingIndex.as_view(), name='outsourcing_index'),
+                path('types/', OutsourcingTypes.as_view(), name='outsourcing_types'),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

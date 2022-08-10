@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'extworkers.apps.ExtworkersConfig',
     'security.apps.SecurityConfig',
     'cleaning.apps.CleaningConfig',
+    'outsourcing.apps.OutsourcingConfig',
     'users',
 ]
 
