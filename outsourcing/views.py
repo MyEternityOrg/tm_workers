@@ -6,8 +6,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 import extworkers.models
+from outsourcing.forms import CreatePriceForm
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from outsourcing.models import *
 
 
@@ -85,3 +86,26 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
         context = super(OutsourcingPrices, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
         return context
+
+
+class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+    model = OutsourcingPrices
+    template_name = 'outsourcing_prices_add.html'
+    title = 'Добавить запись'
+    success_url = reverse_lazy('outsourcing:outsourcing_prices')
+    form_class = CreatePriceForm
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(OutSourcingPricesAdd, self).get_context_data(**kwargs)
+        return context
+
+    def get_form(self, form_class=None):
+        form = super(OutSourcingPricesAdd, self).get_form()
+        return form
+
+    def post(self, request, *args, **kwargs):
+        post = request.POST.copy()
+        form = CreatePriceForm(post)
+        if form.is_valid():
+            form.save()
+        return redirect('outsourcing:outsourcing_prices')

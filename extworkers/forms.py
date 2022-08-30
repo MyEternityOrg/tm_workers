@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Form
 
-from .models import Enterprises, ExtWorkerRecord
+from extworkers.models import Enterprises, ExtWorkerRecord
 
 
 class UpdateRecordForm(forms.ModelForm):

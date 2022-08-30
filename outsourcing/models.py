@@ -23,6 +23,9 @@ class OutsourcingContractors(models.Model):
     outsourcing_type = models.ForeignKey(OutsourcingTypes, db_column='outsourcing_type', on_delete=models.DO_NOTHING)
     marked = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'outsourcing_contractors'
         managed = False
