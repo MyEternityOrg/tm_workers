@@ -6,13 +6,15 @@
     <table id="datatable" class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th scope="col">Наименование</th>
+            <th scope="col">График</th>
+            <th scope="col">Вид контрагента</th>
         </tr>
         </thead>
         <tbody>
         {% for item in object_list %}
-            <tr class="clickable-row_np" data-href="#">
+            <tr class="clickable-row_np" data-href="{% url 'outsourcing:outsourcing_timeline_data' item.guid %}">
                 <td>{{ item.name }}</td>
+                <td>{{ item.outsourcing_type.name }}</td>
             </tr>
         {% endfor %}
         </tbody>

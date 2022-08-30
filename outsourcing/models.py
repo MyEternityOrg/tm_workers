@@ -40,7 +40,7 @@ class OutsourcingTimeline(models.Model):
 class OutsourcingTimelineData(models.Model):
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
     dts = models.DateField(db_column='dts')
-    name = models.CharField(max_length=128)
+    #name = models.CharField(max_length=128)
     outsourcing_timeline = models.ForeignKey(OutsourcingTimeline, db_column='outsourcing_timeline', on_delete=models.CASCADE)
     hours = models.IntegerField()
     f_time = models.TimeField(db_column='f_time')
@@ -71,5 +71,5 @@ class OutsourcingPrices(models.Model):
     price = models.FloatField(db_column='price')
 
     class Meta:
-        db_table = 'outsourcing_data_p'
+        db_table = 'outsourcing_prices'
         managed = False

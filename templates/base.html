@@ -26,7 +26,7 @@
                         Тип табеля
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if staff %}
+                        {% if user.is_staff %}
                             <li><a class="dropdown-item" href="{% url 'extworkers:fill_data' %}">ПРР</a></li>
                         {% else %}
                             <li><a class="dropdown-item"
@@ -36,6 +36,26 @@
                         <li><a class="dropdown-item disabled" href="#">ЧОП (в процессе разработки)</a></li>
                     </ul>
                 </li>
+                {% if user.is_staff %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Контрагенты
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_types' %}">Виды
+                                контрагентов</a></li>
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_contractors' %}">Соответствие
+                                контрагентов</a></li>
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_timeline' %}">Графики
+                                контрагентов</a></li>
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_datap' %}">Распределение
+                                контрагентов</a></li>
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_prices' %}">Цены
+                                контрагентов</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
                 <li class="nav-item active">
                     {% if user.is_active %}
                         <a class="nav-link" href="{% url 'users:logout' %}">Пользователь: {{ user.username }}<span
@@ -57,7 +77,7 @@
     <div class="container-fluid">
         <div class="d-flex align-items-center justify-content-between small">
             <div class="text-muted">&copy; Тамерлан 2021-2022</div>
-            <div id="js_validate" hour="{{ max_hour }}" staff="{{ staff }}" max_hours="{{ max_hours }}"></div>
+            <div id="js_validate" hour="{{ max_hour }}" staff="{{ user.is_staff }}" max_hours="{{ max_hours }}"></div>
         </div>
     </div>
 </footer>
