@@ -61,3 +61,15 @@ class OutsourcingDataP(models.Model):
     class Meta:
         db_table = 'outsourcing_data_p'
         managed = False
+
+
+class OutsourcingPrices(models.Model):
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
+    dts = models.DateField(db_column='dts')
+    contractor = models.ForeignKey(OutsourcingContractors, db_column='contractor_guid', on_delete=models.CASCADE)
+    enterprise = models.ForeignKey(Enterprises, db_column='enterprise_guid', on_delete=models.CASCADE)
+    price = models.FloatField(db_column='price')
+
+    class Meta:
+        db_table = 'outsourcing_data_p'
+        managed = False
