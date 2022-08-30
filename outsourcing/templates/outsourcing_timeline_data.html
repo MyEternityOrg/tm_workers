@@ -18,8 +18,8 @@
             <tr class="clickable-row_np" data-href="#">
                 <td>{{ item.outsourcing_timeline.name }}</td>
                 <td>{{ item.dts }}</td>
-                <td>{{ item.f_time }}</td>
-                <td>{{ item.t_time }}</td>
+                <td>{% if item.f_time is None %}00:00:00{% else %}{{ item.f_time }}{% endif %}</td>
+                <td>{% if item.t_time is None %}23:59:59{% else %}{{ item.t_time }}{% endif %}</td>
                 <td>{{ item.hours }}</td>
             </tr>
         {% endfor %}

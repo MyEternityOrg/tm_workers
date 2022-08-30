@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
@@ -40,11 +42,10 @@ class OutsourcingTimeline(models.Model):
 class OutsourcingTimelineData(models.Model):
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
     dts = models.DateField(db_column='dts')
-    #name = models.CharField(max_length=128)
     outsourcing_timeline = models.ForeignKey(OutsourcingTimeline, db_column='outsourcing_timeline', on_delete=models.CASCADE)
     hours = models.IntegerField()
-    f_time = models.TimeField(db_column='f_time')
-    t_time = models.TimeField(db_column='t_time')
+    f_time = models.TimeField(db_column='f_time', default=datetime.time(0, 0, 0))
+    t_time = models.TimeField(db_column='t_time', default=datetime.time(23, 59, 59))
 
     class Meta:
         db_table = 'outsourcing_timeline_data'

@@ -42,6 +42,12 @@ class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMix
     title = 'Детали графика'
     paginate_by = 30
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.filter(outsourcing_timeline=self.kwargs.get('pk')).order_by('dts')
+
 
 class OutsourcingDataP(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingDataP
