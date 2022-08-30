@@ -6,7 +6,7 @@
     {% now "H" as current_hour %}
     <div class="card-body">
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white"><a class="text-decoration-none text-white"
-                                                                       href="{% if staff %} {% url 'extworkers:fill_data' %} {% else %} # {% endif %}"><i
+                                                                       href="{% if user.is_staff %} {% url 'extworkers:fill_data' %} {% else %} # {% endif %}"><i
                 class="fas fa-arrow-up"></i> Подразделение: {{ enterprise }}</a></div>
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white"> Даты:&nbsp;
             {% for dts_c in dts_arr %}
@@ -56,7 +56,7 @@
                             </div>
                             {% include 'pagination.html' %}
                         {% else %}
-                            {% if staff %}
+                            {% if user.is_staff %}
                                 <div class="card-footer">Список пуст. Добавьте сотрудника.</div>
                             {% else %}
                                 {% if not ro %}
@@ -68,7 +68,7 @@
                                 {% endif %}
                             {% endif %}
                         {% endif %}
-                        {% if staff %}
+                        {% if user.is_staff %}
                             <div class="card-footer"><a href="{% url 'extworkers:person_add' enterprise.guid dts %}">
                                 <button class="btn btn-success"> Добавить сотрудника ПРР.</button>
                             </a>

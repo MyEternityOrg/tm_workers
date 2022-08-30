@@ -26,7 +26,6 @@ class UserMain(ListView, BaseClassContextMixin):
     def get_context_data(self, object_list=None, **kwargs):
         context = super(UserMain, self).get_context_data(**kwargs)
         context['dts'] = datetime.strftime(datetime.now(), '%Y-%m-%d')
-        context['staff'] = self.request.user.is_staff
         try:
             profile = ProfileUser.get_profile_by_user_id(self.request.user.id)
             enterprise = Enterprises.objects.get(guid=profile.ent_guid)

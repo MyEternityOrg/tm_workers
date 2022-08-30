@@ -18,6 +18,9 @@ class OutsourcingTypes(ListView, BaseClassContextMixin, UserLoginCheckMixin, Use
     title = 'Виды контрагентов'
     paginate_by = 30
 
+    def get_queryset(self):
+        return self.model.objects.all().order_by('name')
+
 
 class OutsourcingContractors(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingContractors
@@ -25,6 +28,9 @@ class OutsourcingContractors(ListView, BaseClassContextMixin, UserLoginCheckMixi
     success_url = reverse_lazy('outsourcing:outsourcing_contractors')
     title = 'Соответствие контрагентов'
     paginate_by = 30
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('name')
 
 
 class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
@@ -34,6 +40,11 @@ class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, 
     title = 'Графики контрагентов'
     paginate_by = 30
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('name')
 
 class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingTimelineData
@@ -63,6 +74,9 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
     success_url = reverse_lazy('outsourcing:outsourcing_prices')
     title = 'Цены контрагентов'
     paginate_by = 30
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('contractor')
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutsourcingPrices, self).get_context_data(**kwargs)

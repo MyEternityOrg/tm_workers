@@ -22,7 +22,6 @@ class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin)
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordDelete, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
-        context['staff'] = self.request.user.is_staff
         context['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('pk'))
         return context
 
@@ -53,7 +52,6 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordModify, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
-        context['staff'] = self.request.user.is_staff
         context['enterprise'] = Enterprises.objects.get(guid=context['extworkerrecord'].enterprise_id)
         return context
 
@@ -87,7 +85,6 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     def get_context_data(self, object_list=None, **kwargs):
         context = super(PersonRecordAdd, self).get_context_data(**kwargs)
         context['dts'] = self.kwargs.get('dts')
-        context['staff'] = self.request.user.is_staff
         context['enterprise'] = Enterprises.objects.get(guid=self.kwargs.get('pk'))
         return context
 
@@ -129,7 +126,6 @@ class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context['enterprise'] = ent
         context['dts'] = self.kwargs.get('dts')
         context['dts_arr'] = dts_arr
-        context['staff'] = self.request.user.is_staff
         context['title'] = "ПРР: " + ent.name
         if date.today() != datetime.strptime(context['dts'], '%Y-%m-%d').date():
             context['ro'] = True
@@ -164,5 +160,4 @@ class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdmin
     def get_context_data(self, object_list=None, **kwargs):
         context = super(ShopList, self).get_context_data(**kwargs)
         context['dts'] = datetime.strftime(datetime.now(), '%Y-%m-%d')
-        context['staff'] = self.request.user.is_staff
         return context

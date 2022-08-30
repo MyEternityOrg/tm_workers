@@ -3,22 +3,30 @@
 {% load custom_tags %}
 
 {% block content %}
-    <table id="datatable" class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th scope="col">График</th>
-            <th scope="col">Вид контрагента</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in object_list %}
-            <tr class="clickable-row_np" data-href="{% url 'outsourcing:outsourcing_timeline_data' item.guid %}">
-                <td>{{ item.name }}</td>
-                <td>{{ item.outsourcing_type.name }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-table mr-1"></i> Графики</div>
+            <div class="card-body">
+                <table id="datatable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">График</th>
+                        <th scope="col">Вид контрагента</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in object_list %}
+                        <tr class="clickable-row_np"
+                            data-href="{% url 'outsourcing:outsourcing_timeline_data' item.guid %}">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.outsourcing_type.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     {% include 'pagination.html' %}
 {% endblock %}
 

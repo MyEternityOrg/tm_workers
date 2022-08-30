@@ -3,20 +3,27 @@
 {% load custom_tags %}
 
 {% block content %}
-    <table id="datatable" class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Наименование</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in object_list %}
-            <tr class="clickable-row_np" data-href="#">
-                <td>{{ item.name }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-table mr-1"></i> Виды контрагентов</div>
+            <div class="card-body">
+                <table id="datatable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Наименование</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in object_list %}
+                        <tr class="clickable-row_np" data-href="#">
+                            <td>{{ item.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     {% include 'pagination.html' %}
 {% endblock %}
 
