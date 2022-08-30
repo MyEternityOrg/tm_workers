@@ -16,7 +16,7 @@ class OutsourcingTypes(ListView, BaseClassContextMixin, UserLoginCheckMixin, Use
     template_name = 'outsourcing_types.html'
     success_url = reverse_lazy('outsourcing:outsourcing_types')
     title = 'Виды контрагентов'
-    paginate_by = 30
+    paginate_by = 15
 
     def get_queryset(self):
         return self.model.objects.all().order_by('name')
@@ -27,7 +27,7 @@ class OutsourcingContractors(ListView, BaseClassContextMixin, UserLoginCheckMixi
     template_name = 'outsourcing_contractors.html'
     success_url = reverse_lazy('outsourcing:outsourcing_contractors')
     title = 'Соответствие контрагентов'
-    paginate_by = 30
+    paginate_by = 15
 
     def get_queryset(self):
         return self.model.objects.all().order_by('name')
@@ -38,7 +38,7 @@ class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, 
     template_name = 'outsourcing_timeline.html'
     success_url = reverse_lazy('outsourcing:outsourcing_timeline')
     title = 'Графики контрагентов'
-    paginate_by = 30
+    paginate_by = 15
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -51,7 +51,7 @@ class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMix
     template_name = 'outsourcing_timeline_data.html'
     success_url = reverse_lazy('outsourcing:outsourcing_timeline')
     title = 'Детали графика'
-    paginate_by = 30
+    paginate_by = 15
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -65,7 +65,10 @@ class OutsourcingDataP(ListView, BaseClassContextMixin, UserLoginCheckMixin, Use
     template_name = 'outsourcing_datap.html'
     success_url = reverse_lazy('outsourcing:outsourcing_datap')
     title = 'Распределение контрагентов'
-    paginate_by = 30
+    paginate_by = 15
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('outsourcing_contractor', 'dts', 'enterprise')
 
 
 class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
@@ -73,7 +76,7 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
     template_name = 'outsourcing_prices.html'
     success_url = reverse_lazy('outsourcing:outsourcing_prices')
     title = 'Цены контрагентов'
-    paginate_by = 30
+    paginate_by = 15
 
     def get_queryset(self):
         return self.model.objects.all().order_by('contractor')
