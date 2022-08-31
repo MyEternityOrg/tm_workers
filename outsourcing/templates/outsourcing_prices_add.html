@@ -7,23 +7,21 @@
           id="price_record_add">
         {% csrf_token %}
         <div class="form-row">
-            <div class="col-lg-6">
-                <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
-                <div class="form-group">
-                    {{ form.dts }}
-                </div>
-                <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
-                <div class="form-group">
-                    {{ form.contractor }}
-                </div>
-                <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
-                <div class="form-group">
-                    {{ form.enterprise }}
-                </div>
-                <label class="small mb-1" for="{{ form.price.id_for_label }}">Стоимость:</label>
-                <div class="form-group">
-                    {{ form.price }}
-                </div>
+            <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
+            <div class="form-group">
+                {{ form.dts }}
+            </div>
+            <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
+            <div class="form-group">
+                {{ form.contractor }}
+            </div>
+            <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
+            <div class="form-group">
+                {{ form.enterprise }}
+            </div>
+            <label class="small mb-1" for="{{ form.price.id_for_label }}">Стоимость:</label>
+            <div class="form-group">
+                {{ form.price }}
             </div>
         </div>
         <div class="modal-footer">
