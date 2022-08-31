@@ -5,18 +5,25 @@
 {% block content %}
     <div class="container-fluid">
         <div class="card mb-4">
-            <div class="card-header"><i class="fas fa-table mr-1"></i> Виды контрагентов</div>
+            <div class="card-header"><i class="fas fa-table mr-1"></i> Данные
+                графика {{ object_list.0.outsourcing_timeline.name }}</div>
             <div class="card-body">
                 <table id="datatable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Наименование</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Время начала</th>
+                        <th scope="col">Время окончания</th>
+                        <th scope="col">Часы</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for item in object_list %}
                         <tr class="clickable-row_np" data-href="#">
-                            <td>{{ item.name }}</td>
+                            <td>{{ item.dts }}</td>
+                            <td>{% if item.f_time is None %}00:00:00{% else %}{{ item.f_time }}{% endif %}</td>
+                            <td>{% if item.t_time is None %}23:59:59{% else %}{{ item.t_time }}{% endif %}</td>
+                            <td>{{ item.hours }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

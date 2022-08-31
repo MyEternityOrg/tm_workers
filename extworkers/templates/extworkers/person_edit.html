@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <span id="result"></span>
-                {% if staff %}
+                {% if user.is_staff %}
                     <div class="form-row">
                         <div class="col-lg-4" style="margin-top: 33px;">
                             <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
@@ -68,7 +68,7 @@
                     </div>
                 {% endif %}
             </form>
-            {% if staff %}
+            {% if user.is_staff %}
                 <form action="{% url 'extworkers:person_delete' object.enterprise.guid dts object.guid %}"
                       method="post" enctype="multipart/form-data" id="f_delete">
                     {% csrf_token %}

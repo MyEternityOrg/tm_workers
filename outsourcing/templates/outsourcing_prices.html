@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
+{#    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">#}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="form-row">
+            <div class="col-lg-4" style="margin-top: 33px;">
+                <input class="btn p-2 btn-flat btn-success" type="submit" value="&nbsp;+&nbsp;" id="new_record">
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-table mr-1"></i> Стоимость услуг контрагентов</div>
+            <div class="card-body">
+                <table id="datatable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Контрагент</th>
+                        <th scope="col">Подразделение</th>
+                        <th scope="col">Цена</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in object_list %}
+                        <tr class="clickable-row_np" data-href="#">
+                            <td>{{ item.dts }}</td>
+                            <td>{{ item.contractor.name }}</td>
+                            <td>{{ item.enterprise.name }}</td>
+                            <td>{{ item.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'pagination.html' %}
+
+    <div class="modal fade bd-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" id="ModalWindow"
+         tabindex="-1" role="dialog"
+         aria-labelledby="ModalWindowLg"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Добавить запись</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.getElementById('new_record').addEventListener('click', function (e) {
+                let _url = "{% url 'outsourcing:outsourcing_prices_add' %}";
+                $("#ModalWindow").modal("show");
+                $.ajax({
+                    url: _url,
+                    type: 'get',
+                    success: function (data) {
+                        $("#ModalWindow .modal-body").html(data);
+                    }
+                })
+            }
+        );
+    </script>
+    <script src="{% static '/dist/js/jquery.tables_tm.js' %}"></script>
+    <script src="{% static '/dist/js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endblock %}
