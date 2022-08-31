@@ -1,4 +1,8 @@
+import uuid
+from datetime import datetime
+
 from django import forms
+from django.forms import DateInput, DateTimeInput
 
 from outsourcing.models import OutsourcingPrices, OutsourcingContractors
 from extworkers.models import Enterprises
@@ -43,27 +47,20 @@ class CreatePriceForm(forms.ModelForm):
     guid = forms.CharField()
     contractor = forms.ModelChoiceField(OutsourcingContractors.objects.all().order_by('name'))
     enterprise = forms.ModelChoiceField(Enterprises.objects.filter(enterprise_code__gt=2).order_by('enterprise_code'))
-    # person_name = forms.CharField()
-    # f_time = forms.TimeField()
-    # t_time = forms.TimeField()
-    # p_city = forms.CharField()
-    # p_birthday = forms.DateField()
-    dts = forms.DateField()
-
-    # person_name.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Введите ФИО сотрудника"})
-    # p_city.widget.attrs.update({'class': 'special', 'required': True, 'placeholder': "Место рождения сотрудника"})
-    # f_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
-    # t_time.widget.attrs.update({'data-format': 'hh:mm', 'readonly': True, 'required': True})
-    # p_birthday.widget.attrs.update({'data-format': 'yyyy-MM-dd', 'readonly': True, 'required': True})
+    price = forms.FloatField()
 
     class Meta:
         model = OutsourcingPrices
         fields = '__all__'
-        exclude = ('dts',)
+        widgets = {
+            'dts': (DateTimeInput(attrs={'type': 'datetime-local'}))
+        }
 
-
-    # def is_valid(self, *args, **kwargs):
-    #     super(CreateRecordForm, self).__init__(*args, **kwargs)
-    #     return True
-
-
+    def __init__(self, *args, **kwargs):
+        super(CreatePriceForm, self).__init__(*args, **kwargs)
+        self.fields['dts'].widget.attrs['class'] = 'datetimepicker special'
+        self.fields['dts'].widget.attrs['min'] = datetime.today().strftime("%Y-%m-%d %H:%M")
+        self.fields['contractor'].widget.attrs['class'] = 'form-select'
+        self.fields['enterprise'].widget.attrs['class'] = 'form-select'
+        self.fields['contractor'].widget.attrs['required'] = True
+        self.fields['enterprise'].widget.attrs['required'] = True

@@ -1,32 +1,36 @@
 {% load static %}
 {% load custom_tags %}
 
-{% block content %}
-        <form action="{% url 'outsourcing:outsourcing_prices_add' %}" method="post" enctype="multipart/form-data"
-              id="price_record_add">
-            {% csrf_token %}
-            <div class="form-row">
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата: </label>
-                        {{ form.dts }}
-                    </div>
-                    <div class="form-group">
-                        <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент: </label>
-                        {{ form.contractor }}
-                    </div>
-                    <div class="form-group">
-                        <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение: </label>
-                        {{ form.enterprise }}
-                    </div>
 
+{% block content %}
+    <form action="{% url 'outsourcing:outsourcing_prices_add' %}" method="post" enctype="multipart/form-data"
+          id="price_record_add">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col-lg-6">
+                <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
+                <div class="form-group">
+                    {{ form.dts }}
+                </div>
+                <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
+                <div class="form-group">
+                    {{ form.contractor }}
+                </div>
+                <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
+                <div class="form-group">
+                    {{ form.enterprise }}
+                </div>
+                <label class="small mb-1" for="{{ form.price.id_for_label }}">Стоимость:</label>
+                <div class="form-group">
+                    {{ form.price }}
                 </div>
             </div>
-            <div class="modal-footer">
-                <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
-                <input class="btn p-2 btn-flat btn-danger" type="button" id="close_modal_price_add" value="Закрыть">
-            </div>
-        </form>
+        </div>
+        <div class="modal-footer">
+            <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
+            <input class="btn p-2 btn-flat btn-danger" type="button" id="close_modal_price_add" value="Закрыть">
+        </div>
+    </form>
 {% endblock %}
 
 {% block script %}
@@ -35,6 +39,6 @@
             $("#ModalWindow").modal("hide");
             $("#ModalWindow .modal-body").html("");
         });
+
     </script>
-    <script src="{% static '/dist/js/jquery.tables_tm.js' %}"></script>
 {% endblock %}

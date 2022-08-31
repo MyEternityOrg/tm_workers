@@ -7,7 +7,7 @@ from extworkers.models import Enterprises
 
 
 class OutsourcingTypes(models.Model):
-    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     name = models.CharField(max_length=64)
 
     class Meta:
@@ -16,7 +16,7 @@ class OutsourcingTypes(models.Model):
 
 
 class OutsourcingContractors(models.Model):
-    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     name = models.CharField(max_length=256)
     inn = models.CharField(max_length=64)
     kpp = models.CharField(max_length=64)
@@ -32,7 +32,7 @@ class OutsourcingContractors(models.Model):
 
 
 class OutsourcingTimeline(models.Model):
-    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     name = models.CharField(max_length=128)
     outsourcing_type = models.ForeignKey(OutsourcingTypes, db_column='outsourcing_type', on_delete=models.DO_NOTHING)
     marked = models.IntegerField(default=0)
@@ -43,7 +43,7 @@ class OutsourcingTimeline(models.Model):
 
 
 class OutsourcingTimelineData(models.Model):
-    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     dts = models.DateField(db_column='dts')
     outsourcing_timeline = models.ForeignKey(OutsourcingTimeline, db_column='outsourcing_timeline', on_delete=models.CASCADE)
     hours = models.IntegerField()
@@ -56,7 +56,7 @@ class OutsourcingTimelineData(models.Model):
 
 
 class OutsourcingDataP(models.Model):
-    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     dts = models.DateField(db_column='dts')
     outsourcing_contractor = models.ForeignKey(OutsourcingContractors, db_column='outsourcing_contractor', on_delete=models.CASCADE)
     outsourcing_timeline = models.ForeignKey(OutsourcingTimeline, db_column='outsourcing_timeline', on_delete=models.CASCADE)
@@ -68,8 +68,8 @@ class OutsourcingDataP(models.Model):
 
 
 class OutsourcingPrices(models.Model):
-    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4(), db_column='guid')
-    dts = models.DateField(db_column='dts')
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
+    dts = models.DateTimeField(db_column='dts')
     contractor = models.ForeignKey(OutsourcingContractors, db_column='contractor_guid', on_delete=models.CASCADE)
     enterprise = models.ForeignKey(Enterprises, db_column='enterprise_guid', on_delete=models.CASCADE)
     price = models.FloatField(db_column='price')

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timedelta, date
+from datetime import datetime
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -99,12 +99,15 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
         context = super(OutSourcingPricesAdd, self).get_context_data(**kwargs)
         return context
 
-    def get_form(self, form_class=None):
-        form = super(OutSourcingPricesAdd, self).get_form()
-        return form
+    # def get_form(self, form_class=None):
+    #     form = super(OutSourcingPricesAdd, self).get_form()
+    #     return form
 
     def post(self, request, *args, **kwargs):
         post = request.POST.copy()
+        post['guid'] = uuid.uuid4()
+        dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
+        post['dts'] = dts
         form = CreatePriceForm(post)
         if form.is_valid():
             form.save()

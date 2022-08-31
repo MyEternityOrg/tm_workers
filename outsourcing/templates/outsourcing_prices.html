@@ -2,6 +2,12 @@
 {% load static %}
 {% load custom_tags %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
+{#    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">#}
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="form-row">
@@ -72,4 +78,5 @@
         );
     </script>
     <script src="{% static '/dist/js/jquery.tables_tm.js' %}"></script>
+    <script src="{% static '/dist/js/bootstrap-datetimepicker.min.js' %}"></script>
 {% endblock %}
