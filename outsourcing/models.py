@@ -3,8 +3,24 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
-from extworkers.models import Enterprises
 
+
+class Enterprises(models.Model):
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
+    name = models.CharField(max_length=400, db_column='name')
+    enterprise_code = models.IntegerField(db_column='enterprise_code')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'enterprises'
+        managed = False
+        ordering = ['enterprise_code']
+
+    @classmethod
+    def get_list_shops(cls):
+        return cls.objects.filter(enterprise_code__gte=3, enterprise_code__lte=999)
 
 class OutsourcingTypes(models.Model):
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
