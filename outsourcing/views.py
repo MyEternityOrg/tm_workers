@@ -1,4 +1,5 @@
 import uuid
+from django.db.models import Max
 from datetime import datetime
 from django.contrib import messages
 from django.http import HttpResponse
@@ -81,7 +82,7 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
     paginate_by = 15
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('contractor')
+        return self.model.objects.raw("select * from [get_outsourcing_prices_offset] (%s)", [datetime.datetime.today()])
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutsourcingPrices, self).get_context_data(**kwargs)
@@ -120,6 +121,10 @@ class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMi
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutSourcingPlanningStaff, self).get_context_data(**kwargs)
         return context
+
+    def get_queryset(self):
+        return self.model.objects.raw("select * from [get_outsourcing_pplanning_offset] (%s)",
+                                      [datetime.datetime.today()])
 
 
 class OutSourcingPlanningStaffAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
