@@ -11,7 +11,7 @@ from extworkers.models import Enterprises
 class CreatePriceForm(forms.ModelForm):
     guid = forms.CharField()
     contractor = forms.ModelChoiceField(OutsourcingContractors.objects.all().order_by('name'))
-    enterprise = forms.ModelChoiceField(Enterprises.objects.filter(enterprise_code__gt=2).order_by('enterprise_code'))
+    enterprise = forms.ModelChoiceField(Enterprises.get_list_shops().order_by('enterprise_code'))
     price = forms.FloatField()
 
     class Meta:
@@ -36,7 +36,7 @@ class CreatePlanningRecordForm(forms.ModelForm):
     guid = forms.CharField()
     contractor = forms.ModelChoiceField(OutsourcingContractors.objects.all().order_by('name'))
     enterprise = forms.ModelChoiceField(
-        Enterprises.objects.filter(enterprise_code__gt=2, enterprise_code__lt=999).order_by('enterprise_code'))
+        Enterprises.get_list_shops().order_by('enterprise_code'))
     amount = forms.IntegerField()
 
     class Meta:
