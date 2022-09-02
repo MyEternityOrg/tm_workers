@@ -1,0 +1,46 @@
+{% load static %}
+{% load custom_tags %}
+
+
+{% block content %}
+    <form action="{% url 'outsourcing:outsourcing_planning_staff_add' %}" method="post" enctype="multipart/form-data"
+          id="planning_record_add">
+        {% csrf_token %}
+        <div class="form-row">
+            <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
+            <div class="form-group">
+                {{ form.dts }}
+            </div>
+            <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
+            <div class="form-group">
+                {{ form.contractor }}
+            </div>
+            <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
+            <div class="form-group">
+                {{ form.enterprise }}
+            </div>
+            <label class="small mb-1" for="{{ form.amount.id_for_label }}">Количество:</label>
+            <div class="form-group">
+                {{ form.amount }}
+            </div>
+            <label class="small mb-1" for="{{ form.gender.id_for_label }}">Пол:</label>
+            <div class="form-group">
+                {{ form.gender }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
+            <input class="btn p-2 btn-flat btn-danger" type="button" id="close_planning_add" value="Закрыть">
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.getElementById('close_planning_add').addEventListener('click', function (e) {
+            $("#ModalWindow").modal("hide");
+            $("#ModalWindow .modal-body").html("");
+        });
+
+    </script>
+{% endblock %}

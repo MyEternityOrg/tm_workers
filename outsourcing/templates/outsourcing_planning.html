@@ -9,11 +9,11 @@
 
 {% block content %}
     <div class="container-fluid">
-{#        <div class="form-row">#}
-{#            <div class="col-lg-4" style="margin-top: 33px;">#}
-{#                <input class="btn p-2 btn-flat btn-success" type="submit" value="&nbsp;+&nbsp;" id="new_record">#}
-{#            </div>#}
-{#        </div>#}
+        <div class="form-row">
+            <div class="col-lg-4" style="margin-top: 33px;">
+                <input class="btn p-2 btn-flat btn-success" type="submit" value="&nbsp;+&nbsp;" id="new_record">
+            </div>
+        </div>
         <div class="card mb-4">
             <div class="card-header"><i class="fas fa-table mr-1"></i> План выхода контрагентов</div>
             <div class="card-body">
@@ -66,7 +66,7 @@
 {% block script %}
     <script>
         document.getElementById('new_record').addEventListener('click', function (e) {
-                let _url = "{% url 'outsourcing:outsourcing_prices_add' %}";
+                let _url = "{% url 'outsourcing:outsourcing_planning_staff_add' %}";
                 $("#ModalWindow").modal("show");
                 $.ajax({
                     url: _url,

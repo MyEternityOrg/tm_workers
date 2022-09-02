@@ -31,5 +31,6 @@ urlpatterns = [
                 path('timeline/', OutsourcingTimeline.as_view(), name='outsourcing_timeline'),
                 path('planning/', OutsourcingDataP.as_view(), name='outsourcing_datap'),
                 path('planning_staff/', OutSourcingPlanningStaff.as_view(), name='outsourcing_planning_staff'),
+                path('planning_staff/add', OutSourcingPlanningStaffAdd.as_view(), name='outsourcing_planning_staff_add'),
                 path('timeline_data/<pk>', OutsourcingTimelineData.as_view(), name='outsourcing_timeline_data'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
