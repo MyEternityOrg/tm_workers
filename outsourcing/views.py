@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 import extworkers.models
-from outsourcing.forms import CreatePriceForm
+from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from outsourcing.models import *
@@ -46,6 +46,7 @@ class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, 
 
     def get_queryset(self):
         return self.model.objects.all().order_by('name')
+
 
 class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingTimelineData
@@ -99,10 +100,6 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
         context = super(OutSourcingPricesAdd, self).get_context_data(**kwargs)
         return context
 
-    # def get_form(self, form_class=None):
-    #     form = super(OutSourcingPricesAdd, self).get_form()
-    #     return form
-
     def post(self, request, *args, **kwargs):
         post = request.POST.copy()
         post['guid'] = uuid.uuid4()
@@ -112,3 +109,36 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
         if form.is_valid():
             form.save()
         return redirect('outsourcing:outsourcing_prices')
+
+
+class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+    model = OutsourcingPPlanning
+    template_name = 'outsourcing_planning.html'
+    title = 'Плановая явка контрагентов'
+    success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(OutSourcingPlanningStaff, self).get_context_data(**kwargs)
+        return context
+
+
+class OutSourcingPlanningStaffAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+    model = OutSourcingPlanningStaff
+    template_name = 'outsourcing_planning_add.html'
+    title = 'Добавить запись'
+    success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
+    form_class = CreatePlanningRecordForm
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(OutSourcingPlanningStaffAdd, self).get_context_data(**kwargs)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        post = request.POST.copy()
+        post['guid'] = uuid.uuid4()
+        dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
+        post['dts'] = dts
+        form = CreatePlanningRecordForm(post)
+        if form.is_valid():
+            form.save()
+        return redirect('outsourcing:outsourcing_planning_staff')
