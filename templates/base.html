@@ -11,6 +11,7 @@
     <title>{{ title|title }}</title>
     <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-icons/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/DataTables/datatables.min.css' %}"/>
     {% block css %}
     {% endblock %}
@@ -23,47 +24,47 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Тип табеля
+                        <i class="bi bi-journals"></i> Тип табеля
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if user.is_staff %}
-                            <li><a class="dropdown-item" href="{% url 'extworkers:fill_data' %}">ПРР</a></li>
+                            <li><a class="dropdown-item" href="{% url 'extworkers:fill_data' %}"><i class="bi bi-truck"></i> ПРР</a></li>
                         {% else %}
                             <li><a class="dropdown-item"
-                                   href="{% url 'extworkers:fill_data_shop' enterprise.guid dts %}">ПРР</a></li>
+                                   href="{% url 'extworkers:fill_data_shop' enterprise.guid dts %}"><i class="bi bi-truck"></i> ПРР</a></li>
                         {% endif %}
-                        <li><a class="dropdown-item disabled" href="#">Клининг (в процессе разработки)</a></li>
-                        <li><a class="dropdown-item disabled" href="#">ЧОП (в процессе разработки)</a></li>
+                        <li><a class="dropdown-item disabled" href="#"><i class="bi bi-tsunami"></i> Клининг (в процессе разработки)</a></li>
+                        <li><a class="dropdown-item disabled" href="#"><i class="bi bi-shield-lock-fill"></i> ЧОП (в процессе разработки)</a></li>
                     </ul>
                 </li>
                 {% if user.is_staff %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Контрагенты
+                            <i class="bi bi-building"></i> Контрагенты
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_types' %}">Виды
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_types' %}"><i class="bi bi-list-ul"></i> Виды
                                 контрагентов</a></li>
-                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_contractors' %}">Соответствие
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_contractors' %}"><i class="bi bi-list-ul"></i> Соответствие
                                 контрагентов</a></li>
-                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_timeline' %}">Графики
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_timeline' %}"><i class="bi bi-list-ul"></i> Графики
                                 контрагентов</a></li>
-                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_datap' %}">Распределение
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_datap' %}"><i class="bi bi-list-ul"></i> Распределение
                                 контрагентов</a></li>
-                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_prices' %}">Цены
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_prices' %}"><i class="bi bi-list-ul"></i> Цены
                                 контрагентов</a></li>
-                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_planning_staff' %}">Планирование
+                            <li><a class="dropdown-item" href="{% url 'outsourcing:outsourcing_planning_staff' %}"><i class="bi bi-list-ul"></i> Планирование
                                 работы контрагентов</a></li>
                         </ul>
                     </li>
                 {% endif %}
                 <li class="nav-item active">
                     {% if user.is_active %}
-                        <a class="nav-link" href="{% url 'users:logout' %}">Пользователь: {{ user.username }}<span
+                        <a class="nav-link" href="{% url 'users:logout' %}"><i class="bi bi-person"></i> Пользователь: {{ user.username }}<span
                                 class="sr-only">(current)</span> <i class="fas fa-sign-out-alt"></i></a>
                     {% else %}
-                        <a class="nav-link" href="{% url 'users:login' %}">Войти<span
+                        <a class="nav-link" href="{% url 'users:login' %}"><i class="bi bi-person"></i> Войти<span
                                 class="sr-only">(current)</span> <i class="fas fa-cog fa-fw"></i></a>
 
                     {% endif %}
