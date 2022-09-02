@@ -18,9 +18,15 @@ class Enterprises(models.Model):
         managed = False
         ordering = ['enterprise_code']
 
+    @staticmethod
+    def active_divisions():
+        return Enterprises.objects.raw(
+            'select * from enterprises where guid in (select pdb_guid from [get_enterprise_workstatus] (%s, null) where activity = 1) order by enterprise_code',
+            [datetime.datetime.today()])
+
     @classmethod
     def get_list_shops(cls):
-        return cls.objects.filter(enterprise_code__gte=3, enterprise_code__lte=999)
+        return cls.objects.filter(guid__in=[x.guid for x in cls.active_divisions()])
 
 
 class OutsourcingTypes(models.Model):
