@@ -97,3 +97,22 @@ class OutsourcingPrices(models.Model):
     class Meta:
         db_table = 'outsourcing_prices'
         managed = False
+
+
+class OutsourcingPPlanning(models.Model):
+    Gender_Choices = [
+        ('М', 'М'),
+        ('Ж', 'Ж'),
+        ('МЖ', 'МЖ'),
+    ]
+
+    guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
+    dts = models.DateTimeField(db_column='dts')
+    contractor = models.ForeignKey(OutsourcingContractors, db_column='contractor_guid', on_delete=models.CASCADE)
+    enterprise = models.ForeignKey(Enterprises, db_column='enterprise_guid', on_delete=models.CASCADE)
+    amount = models.IntegerField(db_column='amount')
+    gender = models.CharField(choices=Gender_Choices, max_length=32, db_column='gender', default='M', blank=False)
+
+    class Meta:
+        db_table = 'outsourcing_pplanning'
+        managed = False

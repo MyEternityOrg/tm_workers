@@ -112,3 +112,14 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
         if form.is_valid():
             form.save()
         return redirect('outsourcing:outsourcing_prices')
+
+
+class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+    model = OutsourcingPPlanning
+    template_name = 'outsourcing_planning.html'
+    title = 'Плановая явка контрагентов'
+    success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(OutSourcingPlanningStaff, self).get_context_data(**kwargs)
+        return context
