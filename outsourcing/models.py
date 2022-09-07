@@ -5,6 +5,7 @@ from django.db import models
 import uuid
 
 
+
 class Enterprises(models.Model):
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     name = models.CharField(max_length=400, db_column='name')
@@ -36,6 +37,7 @@ class OutsourcingTypes(models.Model):
     class Meta:
         db_table = 'outsourcing_types'
         managed = False
+        ordering = ['name']
 
 
 class OutsourcingContractors(models.Model):
@@ -47,11 +49,12 @@ class OutsourcingContractors(models.Model):
     marked = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.outsourcing_type.name})'
 
     class Meta:
         db_table = 'outsourcing_contractors'
         managed = False
+        ordering = ['name']
 
 
 class OutsourcingTimeline(models.Model):
@@ -122,3 +125,4 @@ class OutsourcingPPlanning(models.Model):
     class Meta:
         db_table = 'outsourcing_pplanning'
         managed = False
+        ordering = ['dts']

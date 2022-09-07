@@ -11,6 +11,7 @@ from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from outsourcing.models import *
+from .filters import PlanningStaffFilter
 
 
 class OutsourcingTypes(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
@@ -117,14 +118,18 @@ class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMi
     template_name = 'outsourcing_planning.html'
     title = 'Плановая явка контрагентов'
     success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
+    paginate_by = 15
+    filter = PlanningStaffFilter
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutSourcingPlanningStaff, self).get_context_data(**kwargs)
         return context
 
+
     def get_queryset(self):
-        return self.model.objects.raw("select * from [get_outsourcing_pplanning_offset] (%s)",
-                                      [datetime.datetime.today()])
+        return self.model.objects.raw(
+            "select * from [get_outsourcing_pplanning_offset] (%s) order by dts",
+            [datetime.datetime.today()])
 
 
 class OutSourcingPlanningStaffAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
