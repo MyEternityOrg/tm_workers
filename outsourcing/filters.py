@@ -15,15 +15,13 @@ class PlanningStaffFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(PlanningStaffFilter, self).__init__(*args, **kwargs)
-        print(self)
         self.form.fields['contractor'].widget.attrs['class'] = 'form-select'
         self.form.fields['contractor'].widget.attrs['id'] = 'inputGroupSelect04'
         self.form.fields['contractor'].widget.attrs['selected'] = 'Контрагент'
         self.form.fields['enterprise'].widget.attrs['class'] = 'form-select'
         self.form.fields['enterprise'].widget.attrs['id'] = 'inputGroupSelect04'
 
-
     class Meta:
         model = OutsourcingPPlanning
         fields = ['contractor', 'enterprise']
-        ordering =['enterprise']
+        ordering = ['enterprise']

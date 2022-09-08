@@ -5,7 +5,6 @@ from django.db import models
 import uuid
 
 
-
 class Enterprises(models.Model):
     guid = models.CharField(primary_key=True, max_length=64, editable=False, default=uuid.uuid4, db_column='guid')
     name = models.CharField(max_length=400, db_column='name')
