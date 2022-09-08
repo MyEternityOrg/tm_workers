@@ -1,8 +1,5 @@
-import selectors
-
 import django_filters
 from django_filters import *
-from django_filters.widgets import *
 
 from outsourcing.models import *
 

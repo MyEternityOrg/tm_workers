@@ -1,8 +1,8 @@
 import datetime
+import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
-import uuid
 
 
 class Enterprises(models.Model):
@@ -108,6 +108,7 @@ class OutsourcingPrices(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['dts', 'contractor'], name="%(app_label)s_%(class)s_unique")
         ]
+
 
 class OutsourcingPPlanning(models.Model):
     Gender_Choices = [

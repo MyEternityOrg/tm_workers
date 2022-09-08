@@ -1,17 +1,12 @@
-import uuid
-from django.db.models import Max
 from datetime import datetime
-from django.contrib import messages
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
-from django_filters.views import FilterView
 
-import extworkers.models
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
+
 from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
-from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from outsourcing.models import *
+from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 from .filters import PlanningStaffFilter, PlanningPricesFilter
 
 
