@@ -105,7 +105,9 @@ class OutsourcingPrices(models.Model):
     class Meta:
         db_table = 'outsourcing_prices'
         managed = False
-
+        constraints = [
+            models.UniqueConstraint(fields=['dts', 'contractor'], name="%(app_label)s_%(class)s_unique")
+        ]
 
 class OutsourcingPPlanning(models.Model):
     Gender_Choices = [
@@ -124,4 +126,6 @@ class OutsourcingPPlanning(models.Model):
     class Meta:
         db_table = 'outsourcing_pplanning'
         managed = False
-        ordering = ['dts']
+        constraints = [
+            models.UniqueConstraint(fields=['dts', 'contractor'], name="%(app_label)s_%(class)s_unique")
+        ]
