@@ -1,11 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
-from django.urls import path, include
-from django.views.generic.base import RedirectView
+from django.urls import path
+
 from outsourcing.views import *
-from outsourcing.filters import PlanningStaffFilter
-from django_filters.views import FilterView
 
 app_name = 'outsourcing'
 

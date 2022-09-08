@@ -1,11 +1,10 @@
-import uuid
 from datetime import datetime
 
 from django import forms
-from django.forms import DateInput, DateTimeInput
+from django.forms import DateTimeInput
 
-from outsourcing.models import OutsourcingPrices, OutsourcingContractors, OutsourcingPPlanning
 from extworkers.models import Enterprises
+from outsourcing.models import OutsourcingPrices, OutsourcingContractors, OutsourcingPPlanning
 
 
 class CreatePriceForm(forms.ModelForm):

@@ -19,7 +19,7 @@ class ProfileUser(models.Model):
             __ip = '.'.join(str(ip).split('.')[0:3]) + '.'
             if __ip == '127.0.0.':
                 return None
-                #return ProfileUser.objects.get(user_id=2)
+                # return ProfileUser.objects.get(user_id=2)
             else:
                 return ProfileUser.objects.filter(ip_shop__contains=__ip).first()
         except Exception as E:
