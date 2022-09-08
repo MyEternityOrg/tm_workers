@@ -18,8 +18,17 @@ def report_act_service(request):
                   'dts_end': date.today()}
         return render(request, 'act_service/act_service.html', contex)
 
+    # list_ent = []  # нужно распределение контрагентов
     extwork = ExtWorkerRecord.objects.filter(dts__gte=dts_begin, dts__lte=dts_end)
 
+    # extwork_fact = list(map(lambda i: {'enterprise': i, 'f_h': sum(list(map(lambda y: (datetime.strptime(str(y.t_time),
+    #                                                                                                      "%H:%M:%S") - datetime.strptime(
+    #     str(y.f_time), "%H:%M:%S")).seconds / 60 / 60,
+    #                                                                         list(filter(lambda t: t.enterprise == i,
+    #                                                                                     list(extwork))))))},
+    #                         set(map(lambda x: x.enterprise, list(extwork)))))
+
+    # list_price = OutsourcingPrices.model.objects.raw("select * from [get_outsourcing_prices_offset] (%s)", [dts_end])
     list_price = OutsourcingPrices.objects.raw("select * from [get_outsourcing_prices_offset] (%s)", [dts_end])
 
     init = list(
@@ -27,7 +36,7 @@ def report_act_service(request):
                        'f_h': sum(list(map(lambda y: (datetime.strptime(str(y.t_time), "%H:%M:%S") - datetime.strptime(
                            str(y.f_time), "%H:%M:%S")).seconds / 60 / 60,
                                            list(filter(lambda t: t.enterprise == i, list(extwork))))))},
-            sorted(set(map(lambda x: x.enterprise, list(filter(lambda x: x.contractor_id == contractor, list(list_price))))),key=lambda s:s.enterprise_code)))
+            set(map(lambda x: x.enterprise, list(list_price)))))
 
     total = 0
     for i in init:
@@ -37,16 +46,8 @@ def report_act_service(request):
 
 
     contex = {'init': init,
-              'contractor': OutsourcingContractors.objects.get(guid=contractor),
+              'contractor': contractor,
               'dts_end': dts_end,
               'total': total}
 
     return render(request, 'act_service/part_act_service.html', contex)
-
-
-def select_contractor(request):
-    TYPE_PRR = '99C0A151-0D85-439E-81B4-8BE403554DD9'
-
-    list_contr = OutsourcingContractors.objects.filter(outsourcing_type=TYPE_PRR)
-
-    return render(request, 'outsourcing_select_contractors.html', {'object_list': list_contr,})
