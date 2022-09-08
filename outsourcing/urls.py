@@ -11,7 +11,7 @@ app_name = 'outsourcing'
 
 urlpatterns = [
                   path('types/', OutsourcingTypes.as_view(), name='outsourcing_types'),
-                  path('prices/', OutsourcingPrices.as_view(), name='outsourcing_prices'),
+                  path('prices/search/', OutsourcingPrices.as_view(), name='outsourcing_prices'),
                   path('prices/add', OutSourcingPricesAdd.as_view(), name='outsourcing_prices_add'),
                   path('contractors/', OutsourcingContractors.as_view(), name='outsourcing_contractors'),
                   path('timeline/', OutsourcingTimeline.as_view(), name='outsourcing_timeline'),

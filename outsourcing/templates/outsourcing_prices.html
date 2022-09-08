@@ -5,18 +5,29 @@
 {% block css %}
     <link rel="stylesheet" type="text/css" media="screen"
           href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
-{#    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">#}
+    {#    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">#}
 {% endblock %}
 
 {% block content %}
     <div class="container-fluid">
-        <div class="form-row">
-            <div class="col-lg-4" style="margin-top: 33px;">
+        <div class="row row-cols-auto" style="margin-top: 33px;margin-bottom: 8px;">
+            <div class="col">
                 <input class="btn p-2 btn-flat btn-success" type="submit" value="&nbsp;+&nbsp;" id="new_record">
+            </div>
+            <div class="col">
+                <form method="get">
+                    <div class="row">
+                        <div class="input-group">
+                            {{ filter.form.contractor }}
+                            {{ filter.form.enterprise }}
+                            <button class="btn btn-outline-secondary" type="submit">Отбор</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="card mb-4">
-            <div class="card-header"><i class="bi bi-table"></i> Стоимость услуг контрагентов</div>
+            <div class="card-header"><i class="bi bi-table"></i> План выхода контрагентов</div>
             <div class="card-body">
                 <table id="datatable" class="table table-bordered table-hover">
                     <thead>
@@ -41,6 +52,7 @@
             </div>
         </div>
     </div>
+
     {% include 'pagination.html' %}
 
     <div class="modal fade bd-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" id="ModalWindow"
