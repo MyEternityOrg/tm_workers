@@ -12,7 +12,7 @@ from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from outsourcing.models import *
-from .filters import PlanningStaffFilter
+from .filters import PlanningStaffFilter, PlanningPricesFilter
 
 
 class OutsourcingTypes(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
@@ -83,11 +83,23 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
     title = 'Цены контрагентов'
     paginate_by = 15
 
+    def __init__(self, **kwargs):
+        super(OutsourcingPrices, self).__init__(**kwargs)
+        self.filter_set = None
+
     def get_queryset(self):
-        return self.model.objects.raw("select * from [get_outsourcing_prices_offset] (%s)", [datetime.datetime.today()])
+        arr = self.model.objects.raw(
+            "select * from [get_outsourcing_prices_offset] (%s)", [datetime.datetime.today()])
+        print([x.guid for x in arr])
+        qr = self.model.objects.filter(guid__in=[x.guid for x in arr])
+        self.filter_set = PlanningPricesFilter(self.request.GET, queryset=qr)
+        return self.filter_set.qs.order_by('enterprise__name')
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutsourcingPrices, self).get_context_data(**kwargs)
+        context['filter'] = self.filter_set
+        context[
+            'filtered_path'] = f"?contractor={self.request.GET.get('contractor', '')}&enterprise={self.request.GET.get('enterprise', '')}"
         context['dts'] = self.kwargs.get('dts')
         return context
 
@@ -136,7 +148,7 @@ class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMi
         arr = self.model.objects.raw(
             "select guid from [get_outsourcing_pplanning_offset] (%s) order by dts",
             [datetime.datetime.today()])
-        qr = OutsourcingPPlanning.objects.filter(guid__in=[x.guid for x in arr])
+        qr = self.model.objects.filter(guid__in=[x.guid for x in arr])
         self.filter_set = PlanningStaffFilter(self.request.GET, queryset=qr)
         return self.filter_set.qs.order_by('enterprise__name')
 
