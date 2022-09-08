@@ -45,7 +45,7 @@ class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, 
     paginate_by = 15
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(OutsourcingTimeline, self).__init__(**kwargs)
 
     def get_queryset(self):
         return self.model.objects.all().order_by('name')
@@ -59,7 +59,7 @@ class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMix
     paginate_by = 15
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(OutsourcingTimelineData, self).__init__(**kwargs)
 
     def get_queryset(self):
         return self.model.objects.filter(outsourcing_timeline=self.kwargs.get('pk')).order_by('dts')
@@ -90,7 +90,6 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
     def get_queryset(self):
         arr = self.model.objects.raw(
             "select * from [get_outsourcing_prices_offset] (%s)", [datetime.datetime.today()])
-        print([x.guid for x in arr])
         qr = self.model.objects.filter(guid__in=[x.guid for x in arr])
         self.filter_set = PlanningPricesFilter(self.request.GET, queryset=qr)
         return self.filter_set.qs.order_by('enterprise__name')
