@@ -3,24 +3,13 @@
 {% load custom_tags %}
 
 {% block content %}
-
-    <div class="row">
-        <div class="col-auto">
-            <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Период с:</span>
-                <input type="date" class="form-control" name="dts_begin" required="" id="dts_begin"
-                       value='{{ dts_begin }}'>
-                <span class="input-group-text">по:</span>
-                <input type="date" class="form-control" name="dts_end" required="" id="dts_end"
-                       value='{{ dts_end }}'>
-                <span class="input-group-text">Контрагент:</span>
-                <input type="text" id="contractor_name" placeholder="--Выберите контрагента--" value='{{ contractor }}'
-                       disabled>
-                <button class="btn btn-outline-secondary" type="button" onclick="WindowEnterContractor()">...</button>
-                <button class="btn btn-success" type="button" onclick="reload_data()">Сформировать</button>
-            </div>
-        </div>
-    </div>
+    <p><label for="dts_begin">Периода с: </label><input type="date" name="dts_begin" required="" id="dts_begin"
+                                                        value={{ dts_begin }}>
+        <label for="dts_end"> по: </label><input type="date" name="dts_end" required="" id="dts_end"
+                                                 value={{ dts_end }}>
+        <button type="button" class="btn btn-success" name="close_table" onclick="reload_data()">Сформировать
+        </button>
+    </p>
 
     <div class="container-fluid">
         <div class="card mb-4">
@@ -68,19 +57,6 @@
                 </div>
             </div>
         </div>
-        <!--MODAL-->
-        <div class="modal bd-example-modal-lg" id="ModalWindow" tabindex="-1" role="dialog"
-             aria-labelledby="ModalWindowLg"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-
-                <div class="modal-content">
-                </div>
-                <a href="#close-modal" rel="modal:close" class="close-modal ">Close</a>
-            </div>
-        </div>
-
-        <input type="hidden" name="contractor_guid" id="contractor_guid" value={{ contractor }}>
     </div>
 {% endblock %}
 
@@ -97,7 +73,7 @@
                 data: {
                     dts_begin: $('#dts_begin').val(),
                     dts_end: $('#dts_end').val(),
-                    contractor: $('#contractor_guid').val(),
+                    contractor: $('#contractor').val(),
                 },
                 success: function callback(data) {
                     $("#card_body").html(data);
@@ -105,26 +81,5 @@
                 }
             });
         };
-
-        function WindowEnterContractor() {
-            document.getElementById('spinner').hidden = false;
-            $("#ModalWindow .modal-content").html('Загрузка.....');
-            var _url = '{% url "reports:select_contractor" %}';
-            $("#ModalWindow").modal("show");
-            $.ajax({
-                url: _url,
-                type: 'get',
-                success: function (data) {
-                    $("#ModalWindow .modal-content").html(data);
-                    document.getElementById('spinner').hidden = true;
-                }
-            })
-        };
-
-        function set_contr(contr_guid, contr_name) {
-            $('#contractor_name').val(contr_name);
-            $('#contractor_guid').val(contr_guid);
-            $("#ModalWindow").modal("hide");
-        }
     </script>
 {% endblock %}
