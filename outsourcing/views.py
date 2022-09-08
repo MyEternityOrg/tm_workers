@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django_filters.views import FilterView
 
 import extworkers.models
 from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
@@ -119,17 +120,25 @@ class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMi
     title = 'Плановая явка контрагентов'
     success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
     paginate_by = 15
-    filter = PlanningStaffFilter
+
+    def __init__(self, **kwargs):
+        super(OutSourcingPlanningStaff, **kwargs).__init__(**kwargs)
+        self.filter_set = None
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutSourcingPlanningStaff, self).get_context_data(**kwargs)
+        context['filter'] = self.filter_set
+        context[
+            'filtered_path'] = f"?contractor={self.request.GET.get('contractor', '')}&enterprise={self.request.GET.get('enterprise', '')}"
         return context
 
-
     def get_queryset(self):
-        return self.model.objects.raw(
-            "select * from [get_outsourcing_pplanning_offset] (%s) order by dts",
+        arr = self.model.objects.raw(
+            "select guid from [get_outsourcing_pplanning_offset] (%s) order by dts",
             [datetime.datetime.today()])
+        qr = OutsourcingPPlanning.objects.filter(guid__in=[x.guid for x in arr])
+        self.filter_set = PlanningStaffFilter(self.request.GET, queryset=qr)
+        return self.filter_set.qs.order_by('enterprise__name')
 
 
 class OutSourcingPlanningStaffAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
