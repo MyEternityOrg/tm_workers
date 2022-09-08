@@ -1,0 +1,94 @@
+{% load static %}
+{% load custom_tags %}
+
+<div class="card-body" id="card_body">
+    <div class="row"><strong>АКТ</strong></div>
+    <div class="row">об оакзании слуг за '{{ dts_end }}'</div>
+    <div class="row">'{{ contractor }}'</div>
+
+    <div class="container">
+{#        <div class="row">#}
+            <div class="col-lg-12">
+               Погрузо-разгрузочные работы
+            </div>
+{#        </div>#}
+    </div>
+    <table id="datatable" class="table table-bordered table-hover table-sm align-middle">
+        <thead>
+        <tr>
+            <th rowspan="2" class="col-sm-1">№ п/п</th>
+            <th rowspan="2">Объект</th>
+            <th rowspan="2">Адрес</th>
+            <th rowspan="2" class="col-sm-1">Стоимость за один час работы, руб/час</th>
+            <th rowspan="2" class="col-sm-1">Фактически отработано, час</th>
+            <th rowspan="2" class="col-sm-1">Стоимость услуг, руб</th>
+            <th colspan="3">Вычеты руб.</th>
+            <th rowspan="2" class="col-sm-1">Сумма к оплате, руб.</th>
+        </tr>
+        <tr>
+            <th class="col-sm-1">Неустойка за невыход или отсутствие замены в течении 4-х часов</th>
+            <th class="col-sm-1">Штрафы внешних организаций, материальный ущерб</th>
+            <th class="col-sm-1">Общая сумма вычетов</th>
+        </tr>
+        <tr class="small sm-1">
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+            <th>9</th>
+            <th>10</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in init %}
+            <tr>
+                <td> {{ forloop.counter }}</td>
+                <td> {{ row.enterprise.enterprise_code }}</td>
+                <td> {{ row.enterprise }}</td>
+                <td> {{ row.price }} </td>
+                <td> {{ row.f_h }}</td>
+                <td> {{ row.sum }}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>{{ row.total }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Итого:</td>
+            <td>{{ total }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <div> ИТОГО: {{ total }} руб.</div>
+    </div>
+
+
+    <div class="row p-xxl-5 ">
+        <div class="col">
+            <div class="row">Заказчик:</div>
+            <div class="row">________________________________</div>
+            <div class="row col-sm-2"> м.п.</div>
+        </div>
+        <div class="col">
+            <div class="row"> Исполнитель:</div>
+            <div class="row">________________________________</div>
+            <div class="row col-sm-2"> м.п.</div>
+        </div>
+    </div>
+
+</div>

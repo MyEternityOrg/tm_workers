@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+    <p><label for="dts_begin">Периода с: </label><input type="date" name="dts_begin" required="" id="dts_begin"
+                                                        value={{ dts_begin }}>
+        <label for="dts_end"> по: </label><input type="date" name="dts_end" required="" id="dts_end"
+                                                 value={{ dts_end }}>
+        <button type="button" class="btn btn-success" name="close_table" onclick="reload_data()">Сформировать
+        </button>
+    </p>
+
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-table mr-1"></i> Погрузо-разгрузочные работы</div>
+            <div class="card-body" id="card_body">
+
+                <table id="datatable" class="table table-bordered table-hover table-sm align-middle">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" class="col-sm-1">№ п/п</th>
+                        <th rowspan="2">Объект</th>
+                        <th rowspan="2">Адрес</th>
+                        <th rowspan="2" class="col-sm-1">Стоимость за один час работы, руб/час</th>
+                        <th rowspan="2" class="col-sm-1">Фактически отработано, час</th>
+                        <th rowspan="2" class="col-sm-1">Стоимость услуг, руб</th>
+                        <th colspan="3">Вычеты руб.</th>
+                        <th rowspan="2" class="col-sm-1">Сумма к оплате, руб.</th>
+                    </tr>
+                    <tr>
+                        <th class="col-sm-1">Неустойка за невыход или отсутствие замены в течении 4-х часов</th>
+                        <th class="col-sm-1">Штрафы внешних организаций, материальный ущерб</th>
+                        <th class="col-sm-1">Общая сумма вычетов</th>
+                    </tr>
+                    <tr class="small sm-1">
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <div class="spinner-border" id='spinner' style="width: 3rem; height: 3rem;" role="status" hidden>
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function reload_data() {
+            $("#card_body").html('');
+            let load_spinner = document.getElementById('spinner');
+            load_spinner.hidden = false;
+
+            $.ajax({
+                type: "GET",
+                url: '{% url 'reports:report_act_service' %}',
+                data: {
+                    dts_begin: $('#dts_begin').val(),
+                    dts_end: $('#dts_end').val(),
+                    contractor: $('#contractor').val(),
+                },
+                success: function callback(data) {
+                    $("#card_body").html(data);
+                    load_spinner.hidden = true;
+                }
+            });
+        };
+    </script>
+{% endblock %}
