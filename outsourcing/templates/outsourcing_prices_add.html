@@ -1,7 +1,5 @@
 {% load static %}
 {% load custom_tags %}
-
-
 {% block content %}
     <div class="container-fluid">
         <form action="{% url 'outsourcing:outsourcing_prices_add' %}" method="post" enctype="multipart/form-data"
@@ -43,13 +41,11 @@
         </form>
     </div>
 {% endblock %}
-
 {% block script %}
     <script>
         document.getElementById('close_modal_price_add').addEventListener('click', function (e) {
             $("#ModalWindow").modal("hide");
             $("#ModalWindow .modal-body").html("");
         });
-
     </script>
 {% endblock %}

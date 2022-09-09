@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_tags %}
-
 {% block css %}
     <link rel="stylesheet" type="text/css" media="screen"
           href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
 {% endblock %}
-
 {% block content %}
     <div class="container-fluid">
         <div class="row row-cols-auto" style="margin-top: 33px;margin-bottom: 8px;">
@@ -70,9 +68,7 @@
             </div>
         </div>
     </div>
-
     {% include 'pagination.html' %}
-
     <div class="modal fade bd-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" id="ModalWindow"
          tabindex="-1" role="dialog"
          aria-labelledby="ModalWindowLg"
@@ -82,10 +78,7 @@
             </div>
         </div>
     </div>
-
-
 {% endblock %}
-
 {% block script %}
     <script>
         document.getElementById('new_record').addEventListener('click', function (e) {

@@ -1,7 +1,5 @@
 {% load static %}
 {% load custom_tags %}
-
-
 {% block content %}
     <div class="container-fluid">
         <form action="{% url 'outsourcing:outsourcing_planning_staff_add' %}" method="post"
@@ -48,7 +46,6 @@
         </form>
     </div>
 {% endblock %}
-
 {% block script %}
     <script>
         document.getElementById('close_modal').addEventListener('click', function (e) {
