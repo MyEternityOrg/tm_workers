@@ -3,33 +3,33 @@
 {% load custom_tags %}
 {% block content %}
     <div class="container-fluid">
-    <div class="card mb-4">
-        <div class="card-header"><i class="bi bi-table"></i> Контрагенты в разрезе видов услуг</div>
-        <div class="card-body">
-            <table id="datatable" class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">Наименование</th>
-                    <th scope="col">ИНН</th>
-                    <th scope="col">КПП</th>
-                    <th scope="col">Вид контрагента</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in object_list %}
-                    <tr class="clickable-row_np" data-href="#">
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.inn }}</td>
-                        <td>{{ item.kpp }}</td>
-                        <td>{{ item.outsourcing_type.name }}</td>
+        <div class="card mb-4">
+            <div class="card-header"><i class="bi bi-table"></i> Контрагенты в разрезе видов услуг</div>
+            <div class="card-body">
+                <table id="datatable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Наименование</th>
+                        <th scope="col">ИНН</th>
+                        <th scope="col">КПП</th>
+                        <th scope="col">Вид контрагента</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for item in object_list %}
+                        <tr class="clickable-row_np" data-href="#">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.inn }}</td>
+                            <td>{{ item.kpp }}</td>
+                            <td>{{ item.outsourcing_type.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% include 'pagination.html' %}
+            </div>
         </div>
     </div>
-    </div>
-    {% include 'pagination.html' %}
 {% endblock %}
 {% block script %}
     <script src="{% static '/dist/js/jquery.tables_tm.js' %}"></script>
