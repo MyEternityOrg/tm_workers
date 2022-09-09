@@ -144,7 +144,7 @@ class ShopList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdmin
     template_name = 'extworkers/extworkers_shop_list.html'
     fields = ['enterprise_code', 'name']
     success_url = reverse_lazy('extworkers:shoplist')
-    paginate_by = 30
+    paginate_by = 15
     title = 'ПРР: Список подразделений'
 
     def __init__(self, **kwargs):
