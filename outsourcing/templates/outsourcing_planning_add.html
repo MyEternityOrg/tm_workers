@@ -3,44 +3,57 @@
 
 
 {% block content %}
-    <form action="{% url 'outsourcing:outsourcing_planning_staff_add' %}" method="post" enctype="multipart/form-data"
-          id="planning_record_add">
-        {% csrf_token %}
-        <div class="form-row">
-            <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
-            <div class="form-group">
-                {{ form.dts }}
+    <div class="container-fluid">
+        <form action="{% url 'outsourcing:outsourcing_planning_staff_add' %}" method="post"
+              enctype="multipart/form-data"
+              id="planning_record_add">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Добавить запись</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
-            <div class="form-group">
-                {{ form.contractor }}
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
+                    <div class="form-group">
+                        {{ form.dts }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
+                    <div class="form-group">
+                        {{ form.contractor }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
+                    <div class="form-group">
+                        {{ form.enterprise }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.amount.id_for_label }}">Количество:</label>
+                    <div class="form-group">
+                        {{ form.amount }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.gender.id_for_label }}">Пол:</label>
+                    <div class="form-group">
+                        {{ form.gender }}
+                    </div>
+                </div>
             </div>
-            <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
-            <div class="form-group">
-                {{ form.enterprise }}
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-check"></i>
+                    &nbsp;Сохранить
+                </button>
+                <button class="btn btn-outline-secondary" id="close_modal" type="button"><i
+                        class="bi bi-door-closed"></i>
+                    &nbsp;Закрыть
+                </button>
             </div>
-            <label class="small mb-1" for="{{ form.amount.id_for_label }}">Количество:</label>
-            <div class="form-group">
-                {{ form.amount }}
-            </div>
-            <label class="small mb-1" for="{{ form.gender.id_for_label }}">Пол:</label>
-            <div class="form-group">
-                {{ form.gender }}
-            </div>
-        </div>
-        <div class="modal-footer">
-            <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
-            <input class="btn p-2 btn-flat btn-danger" type="button" id="close_planning_add" value="Закрыть">
-        </div>
-    </form>
+        </form>
+    </div>
 {% endblock %}
 
 {% block script %}
     <script>
-        document.getElementById('close_planning_add').addEventListener('click', function (e) {
+        document.getElementById('close_modal').addEventListener('click', function (e) {
             $("#ModalWindow").modal("hide");
             $("#ModalWindow .modal-body").html("");
         });
-
     </script>
 {% endblock %}

@@ -3,32 +3,45 @@
 
 
 {% block content %}
-    <form action="{% url 'outsourcing:outsourcing_prices_add' %}" method="post" enctype="multipart/form-data"
-          id="price_record_add">
-        {% csrf_token %}
-        <div class="form-row">
-            <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
-            <div class="form-group">
-                {{ form.dts }}
+    <div class="container-fluid">
+        <form action="{% url 'outsourcing:outsourcing_prices_add' %}" method="post" enctype="multipart/form-data"
+              id="price_record_add">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Добавить запись</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
-            <div class="form-group">
-                {{ form.contractor }}
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="small mb-1" for="{{ form.dts.id_for_label }}">Дата:</label>
+                    <div class="form-group">
+                        {{ form.dts }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.contractor.id_for_label }}">Контрагент:</label>
+                    <div class="form-group">
+                        {{ form.contractor }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
+                    <div class="form-group">
+                        {{ form.enterprise }}
+                    </div>
+                    <label class="small mb-1" for="{{ form.price.id_for_label }}">Стоимость:</label>
+                    <div class="form-group">
+                        {{ form.price }}
+                    </div>
+                </div>
             </div>
-            <label class="small mb-1" for="{{ form.enterprise.id_for_label }}">Подразделение:</label>
-            <div class="form-group">
-                {{ form.enterprise }}
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-check"></i>
+                    &nbsp;Сохранить
+                </button>
+                <button class="btn btn-outline-secondary" id="close_modal_price_add" type="button"><i
+                        class="bi bi-door-closed"></i>
+                    &nbsp;Закрыть
+                </button>
             </div>
-            <label class="small mb-1" for="{{ form.price.id_for_label }}">Стоимость:</label>
-            <div class="form-group">
-                {{ form.price }}
-            </div>
-        </div>
-        <div class="modal-footer">
-            <input class="btn p-2 btn-flat btn-success" type="submit" value="Сохранить">
-            <input class="btn p-2 btn-flat btn-danger" type="button" id="close_modal_price_add" value="Закрыть">
-        </div>
-    </form>
+        </form>
+    </div>
 {% endblock %}
 
 {% block script %}

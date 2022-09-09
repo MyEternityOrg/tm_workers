@@ -79,12 +79,6 @@
          aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Добавить запись</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                </div>
-                <div class="modal-body">
-                </div>
             </div>
         </div>
     </div>
@@ -101,7 +95,7 @@
                     url: _url,
                     type: 'get',
                     success: function (data) {
-                        $("#ModalWindow .modal-body").html(data);
+                        $("#ModalWindow .modal-content").html(data);
                     }
                 })
             }
