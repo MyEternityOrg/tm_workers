@@ -87,7 +87,7 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
             "select * from [get_outsourcing_prices_offset] (%s)", [datetime.datetime.today()])
         qr = self.model.objects.filter(guid__in=[x.guid for x in arr])
         self.filter_set = PlanningPricesFilter(self.request.GET, queryset=qr)
-        return self.filter_set.qs.order_by('enterprise__name')
+        return self.filter_set.qs.order_by('enterprise__name', 'dts')
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutsourcingPrices, self).get_context_data(**kwargs)
@@ -144,7 +144,7 @@ class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMi
             [datetime.datetime.today()])
         qr = self.model.objects.filter(guid__in=[x.guid for x in arr])
         self.filter_set = PlanningStaffFilter(self.request.GET, queryset=qr)
-        return self.filter_set.qs.order_by('enterprise__name')
+        return self.filter_set.qs.order_by('enterprise__name', 'dts')
 
 
 class OutSourcingPlanningStaffAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
