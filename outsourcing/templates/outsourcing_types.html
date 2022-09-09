@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_tags %}
-
 {% block content %}
     <div class="container-fluid">
         <div class="card mb-4">
@@ -21,12 +20,11 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% include 'pagination.html' %}
             </div>
         </div>
     </div>
-    {% include 'pagination.html' %}
 {% endblock %}
-
 {% block script %}
     <script src="{% static '/dist/js/jquery.tables_tm.js' %}"></script>
 {% endblock %}

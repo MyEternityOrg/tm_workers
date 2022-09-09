@@ -1,32 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load custom_tags %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="card mb-4">
-            <div class="card-header"><i class="bi bi-table"></i> Графики контрагентов</div>
+            <div class="card-header"><i class="bi bi-table"></i> Список подразделений</div>
             <div class="card-body">
+            {% if object_list.count > 0 %}
                 <table id="datatable" class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Дата</th>
-                        <th scope="col">Контрагент</th>
-                        <th scope="col">График</th>
+                        <th scope="col">Код подразделения</th>
                         <th scope="col">Подразделение</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for item in object_list %}
-                        <tr class="clickable-row_np" data-href="#">
-                            <td>{{ item.dts }}</td>
-                            <td>{{ item.outsourcing_contractor.name }}</td>
-                            <td>{{ item.outsourcing_timeline.name }}</td>
-                            <td>{{ item.enterprise.name }}</td>
+                        <tr class="clickable-row_np" data-href="{% url 'extworkers:shopdata' item.guid dts %}">
+                            <th>{{ item.enterprise_code }}</th>
+                            <td>{{ item.name }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
                 {% include 'pagination.html' %}
+            {% endif %}
             </div>
         </div>
     </div>

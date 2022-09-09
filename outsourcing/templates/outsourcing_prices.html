@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_tags %}
-
 {% block css %}
     <link rel="stylesheet" type="text/css" media="screen"
           href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
 {% endblock %}
-
 {% block content %}
     <div class="container-fluid">
         <div class="row row-cols-auto" style="margin-top: 33px;margin-bottom: 8px;">
@@ -67,31 +65,20 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% include 'pagination.html' %}
             </div>
         </div>
     </div>
-
-    {% include 'pagination.html' %}
-
     <div class="modal fade bd-example-modal-lg" data-bs-backdrop="static" data-bs-keyboard="false" id="ModalWindow"
          tabindex="-1" role="dialog"
          aria-labelledby="ModalWindowLg"
          aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Добавить запись</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                </div>
-                <div class="modal-body">
-                </div>
             </div>
         </div>
     </div>
-
-
 {% endblock %}
-
 {% block script %}
     <script>
         document.getElementById('new_record').addEventListener('click', function (e) {
@@ -101,7 +88,7 @@
                     url: _url,
                     type: 'get',
                     success: function (data) {
-                        $("#ModalWindow .modal-body").html(data);
+                        $("#ModalWindow .modal-content").html(data);
                     }
                 })
             }

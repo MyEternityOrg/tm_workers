@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django import template
 
 register = template.Library()
