@@ -6,19 +6,15 @@
     {% now "H" as current_hour %}
     <div class="card-body">
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white"><a class="text-decoration-none text-white"
-                                                                       href="{% if user.is_staff %} {% url 'extworkers:fill_data' %} {% else %} # {% endif %}"><i
+                                                                       href="{% if user.is_staff %} {% url 'extworkers:shoplist' %} {% else %} # {% endif %}"><i
                 class="fas fa-arrow-up"></i> Подразделение: {{ enterprise }}</a></div>
         <div class="d-inline p-2 bg-black bg-opacity-75 text-white"> Даты:&nbsp;
             {% for dts_c in dts_arr %}
                 <div class="d-inline p-2 bg-opacity-50 text-white {% if dts_c == dts %} bg-primary {% else %} bg-black {% endif %} ">
                     <a class="text-decoration-none text-white"
-                       href="{% url 'extworkers:fill_data_shop' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
+                       href="{% url 'extworkers:shopdata' enterprise.guid dts_c %}">{{ dts_c }}</a></div>
             {% endfor %}
         </div>
-        {#        {% else %}#}
-        {#            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Подразделение: {{ enterprise }}</div>#}
-        {#            <div class="d-inline p-2 bg-black bg-opacity-75 text-white">Дата: {{ dts }}</div>#}
-        {#        {% endif %}#}
     </div>
     <div id="layoutSidenav_content">
         <main>
