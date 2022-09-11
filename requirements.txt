@@ -1,4 +1,4 @@
-Django==4.1.1
+Django==4
 asgiref==3.5.2
 certifi==2022.6.15
 chardet==5.0.0
@@ -6,7 +6,6 @@ django-smart-selects==1.6.0
 django-widget-tweaks==1.4.12
 idna==3.3
 pymyip0==0.1
-pyodbc==4.0.32
 python-dateutil==2.8.2
 pytz==2022.2.1
 requests==2.26.0
