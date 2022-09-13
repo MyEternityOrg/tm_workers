@@ -12,7 +12,7 @@ from .filters import PlanningStaffFilter, PlanningPricesFilter
 
 class OutsourcingTypes(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingTypes
-    template_name = 'outsourcing_types.html'
+    template_name = 'outsourcing/outsourcing_types.html'
     success_url = reverse_lazy('outsourcing:outsourcing_types')
     title = 'Виды контрагентов'
     paginate_by = 15
@@ -23,7 +23,7 @@ class OutsourcingTypes(ListView, BaseClassContextMixin, UserLoginCheckMixin, Use
 
 class OutsourcingContractors(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingContractors
-    template_name = 'outsourcing_contractors.html'
+    template_name = 'outsourcing/outsourcing_contractors.html'
     success_url = reverse_lazy('outsourcing:outsourcing_contractors')
     title = 'Соответствие контрагентов'
     paginate_by = 15
@@ -34,7 +34,7 @@ class OutsourcingContractors(ListView, BaseClassContextMixin, UserLoginCheckMixi
 
 class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingTimeline
-    template_name = 'outsourcing_timeline.html'
+    template_name = 'outsourcing/outsourcing_timeline.html'
     success_url = reverse_lazy('outsourcing:outsourcing_timeline')
     title = 'Графики контрагентов'
     paginate_by = 15
@@ -48,7 +48,7 @@ class OutsourcingTimeline(ListView, BaseClassContextMixin, UserLoginCheckMixin, 
 
 class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingTimelineData
-    template_name = 'outsourcing_timeline_data.html'
+    template_name = 'outsourcing/outsourcing_timeline_data.html'
     success_url = reverse_lazy('outsourcing:outsourcing_timeline')
     title = 'Детали графика'
     paginate_by = 15
@@ -62,7 +62,7 @@ class OutsourcingTimelineData(ListView, BaseClassContextMixin, UserLoginCheckMix
 
 class OutsourcingDataP(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingDataP
-    template_name = 'outsourcing_datap.html'
+    template_name = 'outsourcing/outsourcing_datap.html'
     success_url = reverse_lazy('outsourcing:outsourcing_datap')
     title = 'Распределение контрагентов'
     paginate_by = 15
@@ -73,7 +73,7 @@ class OutsourcingDataP(ListView, BaseClassContextMixin, UserLoginCheckMixin, Use
 
 class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingPrices
-    template_name = 'outsourcing_prices.html'
+    template_name = 'outsourcing/outsourcing_prices.html'
     success_url = reverse_lazy('outsourcing:outsourcing_prices')
     title = 'Цены контрагентов'
     paginate_by = 15
@@ -100,7 +100,7 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
 
 class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingPrices
-    template_name = 'outsourcing_prices_add.html'
+    template_name = 'outsourcing/outsourcing_prices_add.html'
     title = 'Добавить запись'
     success_url = reverse_lazy('outsourcing:outsourcing_prices')
     form_class = CreatePriceForm
@@ -122,7 +122,7 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
 
 class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingPPlanning
-    template_name = 'outsourcing_planning.html'
+    template_name = 'outsourcing/outsourcing_planning.html'
     title = 'Плановая явка контрагентов'
     success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
     paginate_by = 15
@@ -149,7 +149,7 @@ class OutSourcingPlanningStaff(ListView, BaseClassContextMixin, UserLoginCheckMi
 
 class OutSourcingPlanningStaffAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutSourcingPlanningStaff
-    template_name = 'outsourcing_planning_add.html'
+    template_name = 'outsourcing/outsourcing_planning_add.html'
     title = 'Добавить запись'
     success_url = reverse_lazy('outsourcing:outsourcing_planning_staff')
     form_class = CreatePlanningRecordForm
