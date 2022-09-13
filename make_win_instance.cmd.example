@@ -1,9 +1,9 @@
-@echo off
-@git clone https://github.com/MyEternityOrg/tm_workers
-@cd tm_workers
-@git pull
-@python -m venv venv
-@venv\scripts\python.exe -m pip install --upgrade pip
-@venv\Scripts\pip install -r requirements.txt
-@IF NOT EXIST .env copy .env.simple .env
-venv\Scripts\python manage.py runserver 127.0.0.1:8081
+echo off
+git clone https://github.com/MyEternityOrg/tm_workers
+cd tm_workers
+git pull
+python -m venv venv
+venv\scripts\python.exe -m pip install --upgrade pip
+venv\Scripts\pip install -r requirements.txt
+IF NOT EXIST .env copy .env.simple .env
+venv\Scripts\python manage.py runserver 192.168.108.162:8088
