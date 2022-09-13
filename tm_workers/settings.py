@@ -89,7 +89,7 @@ DATABASES = {
         "PASSWORD": os.getenv("MSSQL_DB_PASSWORD"),
         "HOST": os.getenv("MSSQL_DB_HOST"),
         "PORT": os.getenv("MSSQL_DB_PORT"),
-        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", },
+        "OPTIONS": {"driver": "SQL Server Native Client 11.0", },
     },
 }
 
