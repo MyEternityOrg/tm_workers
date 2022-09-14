@@ -16,7 +16,7 @@ from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsA
 class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     title = 'ПРР: Удалить запись'
-    success_url = reverse_lazy('shopdata')
+    success_url = reverse_lazy('extworkers:shopdata')
     template_name = 'extworkers/extworkers_shop_person_edit.html'
 
     def get_context_data(self, object_list=None, **kwargs):
@@ -28,13 +28,13 @@ class PersonRecordDelete(DeleteView, BaseClassContextMixin, UserLoginCheckMixin)
     def post(self, request, *args, **kwargs):
         obj = ExtWorkerRecord.objects.get(guid=self.kwargs.get('pk'))
         obj.delete()
-        return redirect(reverse_lazy('shopdata', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
+        return redirect(reverse_lazy('extworkers:shopdata', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
 
 
 class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/extworkers_shop_person_edit.html'
-    success_url = reverse_lazy('shopdata')
+    success_url = reverse_lazy('extworkers:shopdata')
     fields = ['person_name', 'f_time', 't_time', 'p_city', 'p_birthday']
     title = 'ПРР: Редактировать запись'
 
@@ -67,13 +67,13 @@ class PersonRecordModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin)
         obj.author = request.user.username
         # obj.author = request.POST[]
         obj.save()
-        return redirect(reverse_lazy('shopdata', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
+        return redirect(reverse_lazy('extworkers:shopdata', args=(self.kwargs.get('dv'), self.kwargs.get('dts'))))
 
 
 class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = ExtWorkerRecord
     template_name = 'extworkers/extworkers_shop_person_add.html'
-    success_url = reverse_lazy('shopdata')
+    success_url = reverse_lazy('extworkers:shopdata')
     form_class = CreateRecordForm
     title = 'ПРР: Добавить сотрудника'
 
@@ -99,7 +99,7 @@ class PersonRecordAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
             form.save()
             messages.success(request, 'Данные сохранены!')
             return redirect(
-                reverse_lazy('shopdata', args=(self.kwargs.get('pk'), self.kwargs.get('dts'))))
+                reverse_lazy('extworkers:shopdata', args=(self.kwargs.get('pk'), self.kwargs.get('dts'))))
         else:
             messages.warning(request, 'Ошибка данных!')
             return HttpResponse("Некорректные данные формы!")
