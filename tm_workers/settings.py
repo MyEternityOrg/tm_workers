@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'cleaning.apps.CleaningConfig',
     'outsourcing.apps.OutsourcingConfig',
     'users',
+    'reports.apps.ReportsConfig'
 ]
 
 MIDDLEWARE = [

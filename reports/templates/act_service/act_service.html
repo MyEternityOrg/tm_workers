@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+    <style>
+        .v_small {
+            font-size: .875em;
+        }
+    </style>
+
+
+    <div class="row">
+        <div class="col-auto">
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text">Период с:</span>
+                <input type="date" class="form-control" name="dts_begin" required="" id="dts_begin"
+                       value='{{ dts_begin }}'>
+                <span class="input-group-text">по:</span>
+                <input type="date" class="form-control" name="dts_end" required="" id="dts_end"
+                       value='{{ dts_end }}'>
+                <span class="input-group-text">Контрагент:</span>
+                <input type="text" id="contractor_name" placeholder="--Выберите контрагента--" value='{{ contractor }}'
+                       disabled>
+                <button class="btn btn-outline-secondary" type="button" onclick="WindowEnterContractor()">...</button>
+                <button class="btn btn-success" type="button" onclick="reload_data()">Сформировать</button>
+            </div>
+        </div>
+        <div class="col-auto">
+            <button onclick="savePDF()">PDF</button>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-table mr-1"></i> Погрузо-разгрузочные работы</div>
+            <div class="card-body" id="card_body">
+
+                <table id="datatable" class="table table-bordered table-hover table-sm align-middle v_small">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" class="col-sm-1">№ п/п</th>
+                        <th rowspan="2">Объект</th>
+                        <th rowspan="2">Адрес</th>
+                        <th rowspan="2" class="col-sm-1">Стоимость за один час работы, руб/час</th>
+                        <th rowspan="2" class="col-sm-1">Фактически отработано, час</th>
+                        <th rowspan="2" class="col-sm-1">Стоимость услуг, руб</th>
+                        <th colspan="3">Вычеты руб.</th>
+                        <th rowspan="2" class="col-sm-1">Сумма к оплате, руб.</th>
+                    </tr>
+                    <tr>
+                        <th class="col-sm-1">Неустойка за невыход или отсутствие замены в течении 4-х часов</th>
+                        <th class="col-sm-1">Штрафы внешних организаций, материальный ущерб</th>
+                        <th class="col-sm-1">Общая сумма вычетов</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <div class="spinner-border" id='spinner' style="width: 3rem; height: 3rem;" role="status" hidden>
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+        </div>
+        <!--MODAL-->
+        <div class="modal bd-example-modal-lg" id="ModalWindow" tabindex="-1" role="dialog"
+             aria-labelledby="ModalWindowLg"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+
+                <div class="modal-content">
+                </div>
+                <a href="#close-modal" rel="modal:close" class="close-modal ">Close</a>
+            </div>
+        </div>
+
+        <input type="hidden" name="contractor_guid" id="contractor_guid" value={{ contractor }}>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+    <script>
+        function reload_data() {
+
+            if($('#dts_begin').val() == '' || $('#dts_end').val() == ''){
+                toastr.options.progressBar = true;
+                toastr.warning('Нужно заполнить период!');
+                return;
+            };
+
+            if ($('#dts_begin').val() > $('#dts_end').val()) {
+                toastr.options.progressBar = true;
+                toastr.warning('Ошибка. Не правильно заполнен период!');
+                return;
+            };
+
+            if($('#contractor_guid').val() == ''){
+                toastr.options.progressBar = true;
+                toastr.warning('Нужно контрагента!');
+                return;
+            };
+
+
+            $("#card_body").html('');
+            let load_spinner = document.getElementById('spinner');
+            load_spinner.hidden = false;
+
+            $.ajax({
+                type: "GET",
+                url: '{% url 'reports:report_act_service' %}',
+                data: {
+                    dts_begin: $('#dts_begin').val(),
+                    dts_end: $('#dts_end').val(),
+                    contractor: $('#contractor_guid').val(),
+                },
+                success: function callback(data) {
+                    $("#card_body").html(data);
+                    load_spinner.hidden = true;
+                }
+            });
+        };
+
+        function WindowEnterContractor() {
+            document.getElementById('spinner').hidden = false;
+            $("#ModalWindow .modal-content").html('Загрузка.....');
+            var _url = '{% url "reports:select_contractor" %}';
+            $("#ModalWindow").modal("show");
+            $.ajax({
+                url: _url,
+                type: 'get',
+                success: function (data) {
+                    $("#ModalWindow .modal-content").html(data);
+                    document.getElementById('spinner').hidden = true;
+                }
+            })
+        };
+
+        function set_contr(contr_guid, contr_name) {
+            $('#contractor_name').val(contr_name);
+            $('#contractor_guid').val(contr_guid);
+            $("#ModalWindow").modal("hide");
+        };
+
+
+        function savePDF() {
+            const element = document.getElementById('card_body');
+
+            html2pdf()
+                .from(element)
+                .save();
+        };
+
+        {#function savePDF() {#}
+        {#    var doc = new jsPDF();#}
+        {#    var elementHandler = {#}
+        {#        '#ignorePDF': function (element, renderer) {#}
+        {#            return true;#}
+        {#        }#}
+        {#    };#}
+        {#    var source = document.getElementById("card_body");#}
+        {#    doc.fromHTML(#}
+        {#        source,#}
+        {#        15,#}
+        {#        15,#}
+        {#        {#}
+        {#            'width': 180, 'elementHandlers': elementHandler#}
+        {#        });#}
+        {##}
+        {#    doc.output("dataurlnewwindow");#}
+        {#};#}
+    </script>
+{% endblock %}

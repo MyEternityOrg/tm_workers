@@ -26,5 +26,6 @@ urlpatterns = [
     path('security/', include('security.urls'), name='security'),
     path('cleaning/', include('cleaning.urls'), name='cleaning'),
     path('outsourcing/', include('outsourcing.urls'), name='outsourcing'),
+    path('reports/', include('reports.urls'), name='reports'),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
