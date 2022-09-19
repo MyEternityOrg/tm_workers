@@ -90,7 +90,7 @@ DATABASES = {
         "PASSWORD": os.getenv("MSSQL_DB_PASSWORD"),
         "HOST": os.getenv("MSSQL_DB_HOST"),
         "PORT": os.getenv("MSSQL_DB_PORT"),
-        "OPTIONS": {"driver": "SQL Server Native Client 11.0", },
+        "OPTIONS": {"driver": os.getenv("MSSQL_OPTIONS_DRIVER"), },
     },
 }
 
