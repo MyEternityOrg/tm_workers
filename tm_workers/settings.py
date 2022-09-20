@@ -9,10 +9,13 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import json
 import os
+import urllib
 from pathlib import Path
 
 from dotenv import load_dotenv
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,15 +86,15 @@ WSGI_APPLICATION = 'tm_workers.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "mssql",
-        "NAME": os.getenv("MSSQL_DB_NAME"),
-        "USER": os.getenv("MSSQL_DB_USER"),
-        "PASSWORD": os.getenv("MSSQL_DB_PASSWORD"),
-        "HOST": os.getenv("MSSQL_DB_HOST"),
-        "PORT": os.getenv("MSSQL_DB_PORT"),
-        "OPTIONS": {"driver": os.getenv("MSSQL_OPTIONS_DRIVER"), },
-    },
+                "default": {
+                    "ENGINE": "mssql",
+                    "NAME": os.getenv("MSSQL_DB_NAME"),
+                    "USER": os.getenv("MSSQL_DB_USER"),
+                    "PASSWORD": os.getenv("MSSQL_DB_PASSWORD"),
+                    "HOST": os.getenv("MSSQL_DB_HOST"),
+                    "PORT": os.getenv("MSSQL_DB_PORT"),
+                    "OPTIONS": json.loads(os.getenv('MSSQL_OPTIONS')),
+            },
 }
 
 # Password validation
