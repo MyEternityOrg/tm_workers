@@ -41,13 +41,13 @@
                                 <tbody>
                                 {% for item in init %}
                                     <tr class='clickable-row-cleaning'
-                                        data-href="{{ item.guid }}">
+                                        data-href="{{ item.guid }}" >
                                         <td>{{ item.dts }}</td>
                                         <td>{{ item.enterprise }}</td>
                                         <td>{{ item.contractor }}</td>
                                         <td>{{ item.sheduler }}</td>
                                         <td>{{ item.plan_hours }}</td>
-                                        <td>{{ item.hours_f }}</td>
+                                        <td id="{{ item.guid }}">{{ item.hours_f }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

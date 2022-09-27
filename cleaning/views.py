@@ -2,6 +2,7 @@ import uuid
 import calendar
 from datetime import datetime, timedelta, date
 
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
@@ -58,7 +59,6 @@ class CleaningList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context = super(CleaningList, self).get_context_data(**kwargs)
         context['title'] = "Клининг"
 
-        # init_fact = CleaningFact.objects.filter(enterprise=ent, dts__lte=today, dts__gte=begin_dts)
         init = list(map(lambda i: {'guid': i.guid, 'dts': i.dts, 'enterprise': i.enterprise,
                                    'contractor': i.contractor, 'sheduler': i.sheduler,
                                    'plan_hours': i.plan_hours}, context['cleaning_plan']))
@@ -110,3 +110,25 @@ class CleaningEditCreate(CreateView, BaseClassContextMixin, UserLoginCheckMixin,
             form.save()
         return redirect('cleaning:cleaninglist')
 
+
+def save_cleaning(request):
+    post ={}
+    post['guid'] = uuid.uuid4()
+
+    obj = CleaningPlan.objects.get(guid=request.POST.get('obj_guid'))
+
+    post['dts'] = obj.dts
+    post['enterprise'] = obj.enterprise
+    post['fact_hours'] = request.POST.get('hours')
+
+    form = CreateCleaningForm(post)
+    if form.is_valid():
+        obj = CleaningFact.objects.filter(enterprise=obj.enterprise, dts=obj.dts)
+        if obj:
+            for i in obj:
+                i.delete()
+
+        form.save()
+        return JsonResponse({'result': 1})
+    else:
+        return JsonResponse({'result': 0})
