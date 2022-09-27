@@ -73,8 +73,11 @@
                         'hours': fact_hours,
                     },
                     success: function callback(response) {
-                        document.getElementById(f_obj_guid).innerHTML = fact_hours;
-                        $("#ModalWindow").modal("hide");
+                        if (response.result==1) {
+                            document.getElementById(f_obj_guid).innerHTML = fact_hours;
+                            $("#ModalWindow").modal("hide");
+                            $("#ModalWindow .modal-content").html('');
+                        };
                     },
 
                 }

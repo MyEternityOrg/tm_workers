@@ -10,6 +10,7 @@ from cleaning.models import CleaningPlan, CleaningFact
 from outsourcing.models import Enterprises
 from cleaning.forms import CreateCleaningForm
 from cleaning.filters import CleaningFilter
+from users.models import ProfileUser
 
 
 TYPE_ClEANING = '6B28C419-5F57-463D-B364-21C43CB104AA'
@@ -23,6 +24,7 @@ class CleaningList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
 
 
     def __init__(self, **kwargs):
+        kwargs['fl_cleaning'] = True
         super(CleaningList, self).__init__(**kwargs)
         self.filter_set = None
 
@@ -31,10 +33,19 @@ class CleaningList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         qs = self.model.objects.all()
         self.filter_set = CleaningFilter(self.request.GET, queryset=qs)
 
+        if not self.request.user.is_staff:
+            q_f = self.filter_set.data
+            if q_f:
+                q_f._mutable = True
+            q_f['enterprise'] = ProfileUser.get_profile_by_user_id(self.request.user.id).ent_guid
+            if not q_f.get('dts'):
+                q_f['dts'] = date.today().strftime('%Y-%m')
+
         return self.filter_set.qs.order_by('dts')
 
 
     def get_context_data(self, object_list=None, **kwargs):
+        today = date.today()
 
         init_fact = CleaningFact.objects.all()
         q_f = self.filter_set.data
@@ -42,7 +53,7 @@ class CleaningList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         if dts:
             f_year = int(dts[:4])
             f_month = int(dts[5:7])
-            today = date.today()
+
             if today.month == f_month and today.year == f_year:
                 end_day = today.day
             else:
@@ -71,15 +82,23 @@ class CleaningList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context['init'] = init
         context['filter'] = self.filter_set
 
+        # Для общего шаблона...
+        if not self.request.user.is_staff:
+            context['enterprise'] = Enterprises.objects.get(guid=ProfileUser.get_profile_by_user_id(self.request.user.id).ent_guid)
+            context['dts'] = today
+
         return context
 
 
 
-class CleaningEditCreate(CreateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+class CleaningEditCreate(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
     model = CleaningFact
     template_name = 'cleaning/cleaning_add.html'
     form_class = CreateCleaningForm
 
+    def __init__(self, **kwargs):
+        kwargs['fl_cleaning'] = True
+        super(CleaningEditCreate, self).__init__(**kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(CleaningEditCreate, self).get_context_data(**kwargs)

@@ -12,7 +12,9 @@
                             <div class="row">
                                 <div class="input-group">
                                     {{ filter.form.dts }}
-                                    {{ filter.form.enterprise }}
+                                    {% if user.is_staff %}
+                                         {{ filter.form.enterprise }}
+                                    {% endif %}
                                     <button class="btn btn-outline-secondary" type="submit"><i
                                             class="bi bi-filter-square"></i>
                                         Отбор

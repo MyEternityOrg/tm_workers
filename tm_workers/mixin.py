@@ -25,8 +25,15 @@ class UserLoginCheckMixin(View):
         if dts_str is not None:
             dts = datetime.strptime(dts_str, '%Y-%m-%d').date()
         profile = ProfileUser.get_profile_by_user_id(request.user.id)
+        try:
+            fl_cleaning = self.fl_cleaning
+        except:
+            fl_cleaning = False
+
         if request.user.is_active:
             if request.user.is_staff and dts <= datetime.now().date():
+                return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
+            elif fl_cleaning:
                 return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
             else:
                 if (profile.ent_guid == kwargs.get('dv') or profile.ent_guid == kwargs.get(
