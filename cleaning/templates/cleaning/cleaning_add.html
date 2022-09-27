@@ -1,0 +1,89 @@
+{% load static %}
+
+{% block content %}
+
+    {#    <form action="{% url 'cleaning:cleaning_edit_create' %}" method="post" enctype="multipart/form-data" id="cleaning_add">#}
+    {% csrf_token %}
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="modal-header"><i class="bi bi-table"></i> Клининг</div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label class="small mb-1" for="dts">Дата:</label>
+                    <div class="form-group" id="dts">
+                        <input class="form-control" type="text" value='{{ obj.dts }}' disabled readonly>
+                    </div>
+                    <label class="small mb-1" for="enterprise">Подразделение:</label>
+                    <div class="form-group" id="enterprise">
+                        <input class="form-control" type="text" value='{{ obj.enterprise }}' disabled readonly>
+                    </div>
+                    <label class="small mb-1" for="contractor">Контрагент:</label>
+                    <div class="form-group" id="contractor">
+                        <input class="form-control" type="text" value='{{ obj.contractor }}' disabled readonly>
+                    </div>
+                    <label class="small mb-1" for="sheduler">График:</label>
+                    <div class="form-group" id="sheduler">
+                        <input class="form-control" type="text" value='{{ obj.sheduler }}' disabled readonly>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label class="small mb-1" for="plan_hours">Часы план:</label>
+                            <input class="form-control" id="plan_hours" type="text" value='{{ obj.plan_hours }}'
+                                   disabled readonly>
+                        </div>
+                        <div class="col">
+                            <label class="small mb-1" for="{{ form.fact_hours.id_for_label }}">Часы факт:</label>
+                            {{ form.fact_hours }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" id="save_form" type="submit" onclick="save_form()"><i class="bi bi-check"></i>
+                    &nbsp;Сохранить
+                </button>
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal"><i
+                        class="bi bi-door-closed">Закрыть</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="obj_guid" id="obj_guid" value="{{ obj.guid }}">
+    {#    </form>#}
+{% endblock %}
+{% block script %}
+    <script>
+
+    function save_form(){
+        let fact_hours = document.getElementById('id_fact_hours').value;
+        let plan_hours = document.getElementById('plan_hours').value;
+
+        if (Number(fact_hours) > Number(plan_hours)) {
+            toastr.options.progressBar = true;
+            toastr.warning('Факт часов не должен превышать план!');
+        } else {
+            let f_obj_guid = document.getElementById('obj_guid').value;
+            $.ajax({
+                    type: "POST",
+                    url: '{% url 'cleaning:ajax_save_cleaning' %}',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        'obj_guid': f_obj_guid,
+                        'hours': fact_hours,
+                    },
+                    success: function callback(response) {
+                        if (response.result==1) {
+                            document.getElementById(f_obj_guid).innerHTML = fact_hours;
+                            $("#ModalWindow").modal("hide");
+                            $("#ModalWindow .modal-content").html('');
+                        };
+                    },
+
+                }
+            )
+        }
+    };
+
+    </script>
+{% endblock %}
