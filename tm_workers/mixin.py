@@ -9,7 +9,7 @@ from django.views.generic.base import ContextMixin
 from users.models import ProfileUser
 
 CONST_MAX_TIME = 12
-CONST_MAX_HOURS = 11
+CONST_MAX_HOURS = 10
 
 class UserIsAdminCheckMixin(View):
     @method_decorator(user_passes_test(lambda u: u.is_staff))

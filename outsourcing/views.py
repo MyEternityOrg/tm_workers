@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 
 from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
 from outsourcing.models import *
@@ -112,6 +112,27 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
     def post(self, request, *args, **kwargs):
         post = request.POST.copy()
         post['guid'] = uuid.uuid4()
+        dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
+        post['dts'] = dts
+        form = CreatePriceForm(post)
+        if form.is_valid():
+            form.save()
+        return redirect('outsourcing:outsourcing_prices')
+
+
+class OutSourcingPricesModify(UpdateView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+    model = OutsourcingPrices
+    template_name = 'outsourcing/outsourcing_prices_modify.html'
+    title = 'Редактировать запись'
+    success_url = reverse_lazy('outsourcing:outsourcing_prices')
+    form_class = CreatePriceForm
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(OutSourcingPricesModify, self).get_context_data(**kwargs)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        post = request.POST.copy()
         dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
         post['dts'] = dts
         form = CreatePriceForm(post)

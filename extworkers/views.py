@@ -128,7 +128,10 @@ class ShopRecord(ListView, BaseClassContextMixin, UserLoginCheckMixin):
         context['dts_arr'] = dts_arr
         context['title'] = "ПРР: " + ent.name
         if date.today() != datetime.strptime(context['dts'], '%Y-%m-%d').date():
-            context['ro'] = True
+            if self.request.user.is_staff:
+                context['ro'] = False
+            else:
+                context['ro'] = True
         else:
             context['ro'] = False
         if self.request.user.is_staff:

@@ -10,6 +10,7 @@ urlpatterns = [
                   path('types/', OutsourcingTypes.as_view(), name='outsourcing_types'),
                   path('prices/search/', OutsourcingPrices.as_view(), name='outsourcing_prices'),
                   path('prices/add', OutSourcingPricesAdd.as_view(), name='outsourcing_prices_add'),
+                  path('prices/modify/<pk>', OutSourcingPricesModify.as_view(), name='outsourcing_prices_modify'),
                   path('contractors/', OutsourcingContractors.as_view(), name='outsourcing_contractors'),
                   path('timeline/', OutsourcingTimeline.as_view(), name='outsourcing_timeline'),
                   path('planning/', OutsourcingDataP.as_view(), name='outsourcing_datap'),
