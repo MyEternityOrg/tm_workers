@@ -56,7 +56,8 @@
                     </thead>
                     <tbody>
                     {% for item in object_list %}
-                        <tr class="clickable-row_unp" id="update_record" data-href={% url 'outsourcing:outsourcing_prices_modify' item.guid %}>
+                        <tr class="clickable-row_unp" id="update_record"
+                            data-href={% url 'outsourcing:outsourcing_prices_modify' item.guid %}>
                             <td>{{ item.dts }}</td>
                             <td>{{ item.contractor.name }}</td>
                             <td>{{ item.enterprise.name }}</td>
@@ -94,31 +95,19 @@
                 })
             }
         );
-
         $('.clickable-row_unp').css('cursor', 'pointer');
         $(".clickable-row_unp").click(function () {
-        let _url = $(this).data("href");
-        $("#ModalWindow").modal("show");
-                        $.ajax({
-                            url: _url,
-                            type: 'get',
-                            data: {},
-                            success: function (data) {
-                                $("#ModalWindow .modal-content").html(data);
-                            }
-                        })
-
-
-       // window.open($(this).data("href"), "_blank");
-    });
-
-        {#document.getElementById('update_record').addEventListener('click', function (e) {#}
-        {#        let _url =  $('#update_record').data('href');#}
-        {#        alert(_url);#}
-        {#        #}
-        {#    }#}
-        {#);#}
-
+            let _url = $(this).data("href");
+            $("#ModalWindow").modal("show");
+            $.ajax({
+                url: _url,
+                type: 'get',
+                data: {},
+                success: function (data) {
+                    $("#ModalWindow .modal-content").html(data);
+                }
+            })
+        })
     </script>
     <script src="{% static '/dist/js/jquery.tables_tm.js' %}"></script>
     <script src="{% static '/dist/js/bootstrap-datetimepicker.min.js' %}"></script>
