@@ -114,9 +114,13 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
         post['guid'] = uuid.uuid4()
         dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
         post['dts'] = dts
+        obj = OutsourcingPrices.objects.filter(contractor=post['contractor']).filter(dts=post['dts'])
         form = CreatePriceForm(post)
-        if form.is_valid():
+
+        if obj is not None and form.is_valid():
+            obj.delete()
             form.save()
+
         return redirect('outsourcing:outsourcing_prices')
 
 
@@ -132,11 +136,10 @@ class OutSourcingPricesModify(UpdateView, BaseClassContextMixin, UserLoginCheckM
         return context
 
     def post(self, request, *args, **kwargs):
-        post = request.POST.copy()
-        dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
-        post['dts'] = dts
-        form = UpdatePriceForm(post)
-        if form.is_valid():
+        obj = self.get_object()
+        form = self.get_form()
+        if obj is not None and form.is_valid():
+            obj.delete()
             form.save()
         return redirect('outsourcing:outsourcing_prices')
 

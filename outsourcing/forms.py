@@ -47,7 +47,7 @@ class UpdatePriceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UpdatePriceForm, self).__init__(*args, **kwargs)
         self.fields['dts'].widget.attrs['class'] = 'datetimepicker form-control'
-        # self.fields['dts'].widget.attrs['min'] = datetime.today().replace(year=datetime.today().year-1).strftime("%Y-%m-%d %H:%M")
+        self.fields['dts'].widget.attrs['min'] = datetime.today().replace(year=datetime.today().day-1).strftime("%Y-%m-%d %H:%M")
         self.fields['contractor'].widget.attrs['class'] = 'form-select'
         self.fields['enterprise'].widget.attrs['class'] = 'form-select'
         self.fields['contractor'].widget.attrs['required'] = True
