@@ -62,10 +62,8 @@ class OutsourcingTimeline(models.Model):
     outsourcing_type = models.ForeignKey(OutsourcingTypes, db_column='outsourcing_type', on_delete=models.DO_NOTHING)
     marked = models.IntegerField(default=0)
 
-
     def __str__(self):
         return f'{self.name}'
-
 
     class Meta:
         db_table = 'outsourcing_timeline'
@@ -110,9 +108,9 @@ class OutsourcingPrices(models.Model):
     class Meta:
         db_table = 'outsourcing_prices'
         managed = False
-        constraints = [
-            models.UniqueConstraint(fields=['dts', 'contractor'], name="%(app_label)s_%(class)s_unique")
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(fields=['dts', 'contractor'], name="%(app_label)s_%(class)s_unique")
+        # ]
 
 
 class OutsourcingPPlanning(models.Model):

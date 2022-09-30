@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
 
-from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm
+from outsourcing.forms import CreatePriceForm, CreatePlanningRecordForm, UpdatePriceForm
 from outsourcing.models import *
 from tm_workers.mixin import BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin
 from .filters import PlanningStaffFilter, PlanningPricesFilter
@@ -71,7 +71,7 @@ class OutsourcingDataP(ListView, BaseClassContextMixin, UserLoginCheckMixin, Use
         return self.model.objects.all().order_by('outsourcing_contractor', 'dts', 'enterprise')
 
 
-class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
+class OutsourcingPricesList(ListView, BaseClassContextMixin, UserLoginCheckMixin, UserIsAdminCheckMixin):
     model = OutsourcingPrices
     template_name = 'outsourcing/outsourcing_prices.html'
     success_url = reverse_lazy('outsourcing:outsourcing_prices')
@@ -79,7 +79,7 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
     paginate_by = 15
 
     def __init__(self, **kwargs):
-        super(OutsourcingPrices, self).__init__(**kwargs)
+        super(OutsourcingPricesList, self).__init__(**kwargs)
         self.filter_set = None
 
     def get_queryset(self):
@@ -90,7 +90,7 @@ class OutsourcingPrices(ListView, BaseClassContextMixin, UserLoginCheckMixin, Us
         return self.filter_set.qs.order_by('enterprise__name', 'dts')
 
     def get_context_data(self, object_list=None, **kwargs):
-        context = super(OutsourcingPrices, self).get_context_data(**kwargs)
+        context = super(OutsourcingPricesList, self).get_context_data(**kwargs)
         context['filter'] = self.filter_set
         context[
             'filtered_path'] = f"?contractor={self.request.GET.get('contractor', '')}&enterprise={self.request.GET.get('enterprise', '')}"
@@ -114,9 +114,13 @@ class OutSourcingPricesAdd(CreateView, BaseClassContextMixin, UserLoginCheckMixi
         post['guid'] = uuid.uuid4()
         dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
         post['dts'] = dts
+        obj = OutsourcingPrices.objects.filter(contractor=post['contractor']).filter(dts=post['dts'])
         form = CreatePriceForm(post)
-        if form.is_valid():
+
+        if obj is not None and form.is_valid():
+            obj.delete()
             form.save()
+
         return redirect('outsourcing:outsourcing_prices')
 
 
@@ -125,18 +129,17 @@ class OutSourcingPricesModify(UpdateView, BaseClassContextMixin, UserLoginCheckM
     template_name = 'outsourcing/outsourcing_prices_modify.html'
     title = 'Редактировать запись'
     success_url = reverse_lazy('outsourcing:outsourcing_prices')
-    form_class = CreatePriceForm
+    form_class = UpdatePriceForm
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(OutSourcingPricesModify, self).get_context_data(**kwargs)
         return context
 
     def post(self, request, *args, **kwargs):
-        post = request.POST.copy()
-        dts = datetime.datetime.strptime(str(post['dts']), '%Y-%m-%dT%H:%M')
-        post['dts'] = dts
-        form = CreatePriceForm(post)
-        if form.is_valid():
+        obj = self.get_object()
+        form = self.get_form()
+        if obj is not None and form.is_valid():
+            obj.delete()
             form.save()
         return redirect('outsourcing:outsourcing_prices')
 
