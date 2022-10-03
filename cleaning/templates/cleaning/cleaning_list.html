@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="{% static 'dist/css/bootstrap-datetimepicker.min.css' %}">
+{#    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">#}
+{% endblock %}
+
 {% block content %}
 
     <div id="layoutSidenav_content">
@@ -10,10 +16,11 @@
                     <div class="col">
                         <form method="get">
                             <div class="row">
-                                <div class="input-group">
+                                <div id="txtDateMMyyyy" class="input-group">
                                     {{ filter.form.dts }}
+                                    <span class="add-on input-group-text"><i class="bi-calendar"></i> </span>
                                     {% if user.is_staff %}
-                                         {{ filter.form.enterprise }}
+                                        {{ filter.form.enterprise }}
                                     {% endif %}
                                     <button class="btn btn-outline-secondary" type="submit"><i
                                             class="bi bi-filter-square"></i>
@@ -43,7 +50,7 @@
                                 <tbody>
                                 {% for item in init %}
                                     <tr class='clickable-row-cleaning'
-                                        data-href="{{ item.guid }}" >
+                                        data-href="{{ item.guid }}">
                                         <td>{{ item.dts }}</td>
                                         <td>{{ item.enterprise }}</td>
                                         <td>{{ item.contractor }}</td>
@@ -75,7 +82,22 @@
 
 {% endblock %}
 {% block script %}
+    <script src="{% static 'dist/js/bootstrap-datetimepicker.min.js' %}"></script>
     <script>
+
+        $(document).ready(function () {
+            $('#txtDateMMyyyy').datetimepicker({
+                format: "yyyy-MM",
+                language: 'ru',
+                pickTime: false,
+                pickDate: true,
+                minViewMode: "months",
+                viewMode: "months"
+            }).on('changeDate', function (ev) {
+                $('#txtDateMMyyyy').datetimepicker('hide')
+            })
+        });
+
         (function ($) {
             $('.clickable-row-cleaning').css('cursor', 'pointer');
             $(".clickable-row-cleaning").click(function () {
@@ -92,5 +114,6 @@
                 })
             });
         })(jQuery);
+
     </script>
 {% endblock %}
