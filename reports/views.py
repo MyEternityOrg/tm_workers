@@ -49,4 +49,4 @@ def select_contractor(request):
 
     list_contr = OutsourcingContractors.objects.filter(outsourcing_type=TYPE_PRR)
 
-    return render(request, 'outsourcing_select_contractors.html', {'object_list': list_contr,})
+    return render(request, 'outsourcing/outsourcing_select_contractors.html', {'object_list': list_contr, })
