@@ -9,7 +9,8 @@ from cleaning.models import *
 
 
 class CleaningFilter(django_filters.FilterSet):
-    dts = DateFilter(widget=DateInput(attrs={'type': 'month'}))
+    # dts = DateFilter(widget=DateInput(attrs={'type': 'text'}))
+    # dts = DateFilter(widget=DateInput(attrs={'data-format': 'yyyy-MM', 'readonly': True, 'required': True}))
     enterprise = ModelChoiceFilter(queryset=Enterprises.get_list_shops(), label='Подразделение',
                                    empty_label='--- Подразделение ---')
 
@@ -19,8 +20,8 @@ class CleaningFilter(django_filters.FilterSet):
         self.form.fields['enterprise'].widget.attrs['class'] = 'form-select'
         self.form.fields['enterprise'].widget.attrs['id'] = 'inputGroupSelect04'
 
-        # self.form.fields['dts'].widget.attrs['class'] = 'form-control'
-        # # self.form.fields['dts'].widget.attrs['class'] = 'datetimepicker'
+        self.form.fields['dts'].widget.attrs['class'] = 'form-control'
+        # self.form.fields['dts'].widget.attrs['class'] = 'datetimepicker'
 
     def filter_queryset(self, queryset):
 
