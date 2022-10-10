@@ -81,6 +81,7 @@ class CleaningList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
 
         context['init'] = init
         context['filter'] = self.filter_set
+        context['today'] = today
 
         # Для общего шаблона...
         if not self.request.user.is_staff:
