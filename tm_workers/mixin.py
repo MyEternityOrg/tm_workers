@@ -29,11 +29,17 @@ class UserLoginCheckMixin(View):
             fl_cleaning = self.fl_cleaning
         except:
             fl_cleaning = False
+        try:
+            fl_security = self.fl_security
+        except:
+            fl_security = False
+
+
 
         if request.user.is_active:
             if request.user.is_staff and dts <= datetime.now().date():
                 return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
-            elif fl_cleaning:
+            elif fl_cleaning or fl_security:
                 return super(UserLoginCheckMixin, self).dispatch(request, *args, **kwargs)
             else:
                 if (profile.ent_guid == kwargs.get('dv') or profile.ent_guid == kwargs.get(

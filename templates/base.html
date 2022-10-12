@@ -37,8 +37,7 @@
                                     class="bi bi-truck"></i> ПРР</a></li>
                         {% endif %}
                         <li><a class="dropdown-item" href="{% url 'cleaning:cleaninglist' %}"><i class="bi bi-tsunami"></i> Клининг</a></li>
-                        <li><a class="dropdown-item disabled" href="#"><i class="bi bi-shield-lock-fill"></i> ЧОП (в
-                            процессе разработки)</a></li>
+                        <li><a class="dropdown-item" href="{% url 'security:securitylist' %}"><i class="bi bi-shield-lock-fill"></i> ЧОП</a></li>
                     </ul>
                 </li>
                 {% if user.is_staff %}
