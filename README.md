@@ -10,7 +10,7 @@
 
 Клонирование репозитория
 
-* git clone https://github.com/MyEternityOrg/marking.git
+* git clone https://github.com/MyEternityOrg/tm_workers.git
 * cd marking
 * git pull
 
