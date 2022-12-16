@@ -13,19 +13,16 @@ from security.filters import SecurityFilter
 from users.models import ProfileUser
 
 
-
 class SecurityList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
     model = SecurityPlan
     template_name = 'security/security_list.html'
     context_object_name = 'security_plan'
     paginate_by = 31
 
-
     def __init__(self, **kwargs):
         kwargs['fl_security'] = True
         super(SecurityList, self).__init__(**kwargs)
         self.filter_set = None
-
 
     def get_queryset(self):
         qs = self.model.objects.all()
@@ -41,13 +38,12 @@ class SecurityList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
 
         return self.filter_set.qs.order_by('dts')
 
-
     def get_context_data(self, object_list=None, **kwargs):
         today = date.today()
 
         init_fact = SecurityFact.objects.all()
         q_f = self.filter_set.data
-        dts =q_f.get('dts')
+        dts = q_f.get('dts')
         if dts:
             f_year = int(dts[:4])
             f_month = int(dts[5:7])
@@ -59,7 +55,7 @@ class SecurityList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
                 end_day = interval_month[1]
 
             init_fact = init_fact.filter(dts__gte=date(f_year, f_month, 1),
-                                 dts__lte=date(f_year, f_month, end_day))
+                                         dts__lte=date(f_year, f_month, end_day))
 
         ent = q_f.get('enterprise')
         if ent:
@@ -74,7 +70,7 @@ class SecurityList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
 
         for i in init:
             list_fact = list(filter(lambda x: x.dts == i['dts']
-                                               and x.enterprise == i['enterprise'], init_fact))
+                                              and x.enterprise == i['enterprise'], init_fact))
             i['hours_f'] = list_fact[0].fact_hours if list_fact else 0
 
         context['init'] = init
@@ -83,11 +79,11 @@ class SecurityList(ListView, BaseClassContextMixin, UserLoginCheckMixin):
 
         # Для общего шаблона...
         if not self.request.user.is_staff:
-            context['enterprise'] = Enterprises.objects.get(guid=ProfileUser.get_profile_by_user_id(self.request.user.id).ent_guid)
+            context['enterprise'] = Enterprises.objects.get(
+                guid=ProfileUser.get_profile_by_user_id(self.request.user.id).ent_guid)
             context['dts'] = today
 
         return context
-
 
 
 class SecurityEditCreate(CreateView, BaseClassContextMixin, UserLoginCheckMixin):
@@ -130,7 +126,7 @@ class SecurityEditCreate(CreateView, BaseClassContextMixin, UserLoginCheckMixin)
 
 
 def save_security(request):
-    post ={}
+    post = {}
     post['guid'] = uuid.uuid4()
 
     obj = SecurityPlan.objects.get(guid=request.POST.get('obj_guid'))
